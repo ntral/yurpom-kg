@@ -793,12 +793,13 @@ function renderCards(tab,query=''){
     container.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">${T('no_results')}</div>`;
     return;
   }
-  container.innerHTML=data.map(c=>{
+  window._cardData = data;
+  container.innerHTML=data.map((c,idx)=>{
     const urgent=c.urgent?`<span class="card-badge badge-urgent">${T('badge_urgent')}</span>`:'';
     const ver=c.verified?`<span class="card-verified">${T('verified')}</span>`:'';
     const act=c.type==='offer'?T('action_write'):T('action_respond');
     const wa=c.whatsapp?c.whatsapp.replace(/\D/g,''):'';
-    return `<div class="card" onclick="openCardModal(${JSON.stringify(c)})">
+    return `<div class="card" onclick="openCardModal(${idx})">
       <div class="card-top"><div style="display:flex;gap:6px;flex-wrap:wrap">
         <span class="card-badge ${typeMap[c.type]}">${T('badge_'+c.type)}</span>${urgent}</div>${ver}</div>
       <h3>${c.title}</h3>
@@ -1056,7 +1057,8 @@ loadListings();
 
 // ── CARD MODAL ──
 let _currentCard = null;
-function openCardModal(c) {
+function openCardModal(idx) {
+  const c = (window._cardData && window._cardData[idx]) || {};
   _currentCard = c;
   const typeMap = {offer:'badge-offer',request:'badge-request',vacancy:'badge-vacancy'};
   const typeLabel = {offer:'💼 Услуга',request:'🙋 Заявка',vacancy:'📌 Вакансия'};
