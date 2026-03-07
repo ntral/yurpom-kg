@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yurpom.kg — Юридическая помощь / Юридикалык жардам</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0d1117;--surface:#161b22;--surface2:#1c2128;--border:#30363d;--gold:#d4a843;--gold-light:#f0c060;--gold-dim:rgba(212,168,67,0.15);--text:#e6edf3;--text-muted:#8b949e;--text-dim:#484f58;--green:#3fb950;--red:#f85149;--blue:#58a6ff;--radius:8px;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'IBM Plex Sans',sans-serif;min-height:100vh;font-size:15px;}
+  nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);letter-spacing:-0.5px;display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;}
+  .logo span{color:var(--text-muted);font-size:12px;font-family:'IBM Plex Mono';font-weight:400;}
+  .nav-links{display:flex;align-items:center;gap:6px;}
+  .nav-btn{padding:7px 14px;border-radius:var(--radius);font-size:13px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all 0.2s;font-family:inherit;white-space:nowrap;}
+  .nav-btn.ghost{background:transparent;color:var(--text-muted);border-color:var(--border);}
+  .nav-btn.ghost:hover{color:var(--text);border-color:var(--text-muted);}
+  .nav-btn.primary{background:var(--gold);color:#0d1117;border-color:var(--gold);font-weight:600;}
+  .nav-btn.primary:hover{background:var(--gold-light);}
+  .lang-switch{display:flex;align-items:center;gap:2px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:2px;flex-shrink:0;}
+  .lang-switch button{padding:4px 10px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'IBM Plex Mono';transition:all 0.2s;background:transparent;color:var(--text-muted);}
+  .lang-switch button.active{background:var(--gold);color:#0d1117;}
+  .hamburger{display:none;cursor:pointer;padding:6px;flex-direction:column;gap:4px;background:none;border:none;flex-shrink:0;}
+  .hamburger div{width:22px;height:2px;background:var(--text-muted);transition:0.3s;border-radius:2px;}
+  .mobile-menu{display:none;position:fixed;inset:60px 0 0 0;z-index:98;background:var(--bg);border-top:1px solid var(--border);flex-direction:column;padding:16px;gap:8px;overflow-y:auto;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu .nav-btn{width:100%;text-align:center;padding:12px;font-size:15px;}
+  .mobile-fab{display:none;position:fixed;bottom:0;left:0;right:0;z-index:90;background:var(--surface);border-top:1px solid var(--border);padding:12px 16px;gap:10px;}
+  .mobile-fab button{flex:1;padding:12px;border-radius:8px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;border:none;}
+  .fab-primary{background:var(--gold);color:#0d1117;}
+  .fab-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)!important;}
+  .hero{background:linear-gradient(180deg,#0d1117 0%,#111820 100%);padding:72px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(212,168,67,0.07) 0%,transparent 70%);pointer-events:none;}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid rgba(212,168,67,0.3);color:var(--gold);font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;font-family:'IBM Plex Mono';margin-bottom:24px;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,6vw,62px);font-weight:900;line-height:1.1;margin-bottom:16px;}
+  .hero h1 em{color:var(--gold);font-style:normal;}
+  .hero p{color:var(--text-muted);font-size:clamp(14px,2.5vw,17px);max-width:560px;margin:0 auto 32px;line-height:1.7;}
+  .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .cta-btn{padding:12px 28px;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;}
+  .cta-btn.gold{background:var(--gold);color:#0d1117;}
+  .cta-btn.gold:hover{background:var(--gold-light);transform:translateY(-1px);}
+  .cta-btn.outline{background:transparent;color:var(--text);border:1px solid var(--border);}
+  .cta-btn.outline:hover{border-color:var(--gold);color:var(--gold);}
+  .hero-stats{display:flex;gap:40px;justify-content:center;margin-top:48px;flex-wrap:wrap;}
+  .stat{text-align:center;}
+  .stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold);}
+  .stat-label{font-size:12px;color:var(--text-muted);margin-top:2px;}
+  .tabs-section{padding:0 24px;max-width:1200px;margin:0 auto;}
+  .tabs-row{display:flex;gap:4px;border-bottom:1px solid var(--border);overflow-x:auto;margin-bottom:24px;margin-top:40px;scrollbar-width:none;}
+  .tabs-row::-webkit-scrollbar{display:none;}
+  .tab{padding:10px 20px;font-size:14px;font-weight:500;color:var(--text-muted);cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;}
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+  .search-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .search-input-wrap{flex:1;min-width:200px;position:relative;}
+  .search-input-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;}
+  .search-input{width:100%;padding:10px 12px 10px 38px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border 0.2s;}
+  .search-input:focus{border-color:var(--gold);}
+  .search-input::placeholder{color:var(--text-dim);}
+  .filter-select{padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:inherit;outline:none;cursor:pointer;min-width:140px;}
+  .filter-select:focus{border-color:var(--gold);}
+  .post-btn{padding:10px 20px;background:var(--gold);color:#0d1117;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background 0.2s;}
+  .post-btn:hover{background:var(--gold-light);}
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:40px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;transition:border-color 0.2s,transform 0.2s;cursor:pointer;}
+  .card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:12px;}
+  .card-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:4px;font-family:'IBM Plex Mono';text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;}
+  .badge-offer{background:rgba(63,185,80,0.15);color:var(--green);border:1px solid rgba(63,185,80,0.3);}
+  .badge-request{background:rgba(88,166,255,0.15);color:var(--blue);border:1px solid rgba(88,166,255,0.3);}
+  .badge-vacancy{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(212,168,67,0.3);}
+  .badge-urgent{background:rgba(248,81,73,0.15);color:var(--red);border:1px solid rgba(248,81,73,0.3);}
+  .card-verified{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--green);white-space:nowrap;}
+  .card h3{font-size:15px;font-weight:600;line-height:1.4;margin-bottom:8px;}
+  .card-meta{display:flex;gap:12px;font-size:12px;color:var(--text-muted);flex-wrap:wrap;margin-bottom:12px;}
+  .card-desc{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+  .tag{padding:3px 8px;border-radius:4px;background:var(--surface2);border:1px solid var(--border);font-size:11px;color:var(--text-muted);}
+  .card-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:12px;}
+  .card-price{font-family:'IBM Plex Mono';font-size:14px;font-weight:500;color:var(--gold);}
+  .card-action{padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;border:1px solid var(--border);background:transparent;color:var(--text);}
+  .card-action:hover{background:var(--gold);color:#0d1117;border-color:var(--gold);}
+  .section{padding:0 24px;max-width:1200px;margin:0 auto 48px;}
+  .section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px;}
+  .section-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;}
+  .section-link{font-size:13px;color:var(--gold);text-decoration:none;white-space:nowrap;}
+  .section-link:hover{text-decoration:underline;}
+  .lawyer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+  .lawyer-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;transition:border-color 0.2s,transform 0.2s;cursor:pointer;}
+  .lawyer-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+  .lawyer-avatar{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;background:linear-gradient(135deg,var(--gold-dim),rgba(212,168,67,0.05));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);}
+  .lawyer-name{font-weight:600;font-size:15px;margin-bottom:4px;}
+  .lawyer-spec{font-size:12px;color:var(--text-muted);margin-bottom:8px;}
+  .lawyer-stars{color:var(--gold);font-size:13px;margin-bottom:6px;}
+  .lawyer-info{font-size:12px;color:var(--text-muted);margin-bottom:14px;}
+  .lawyer-btn{width:100%;padding:8px;border-radius:6px;background:var(--gold-dim);color:var(--gold);border:1px solid rgba(212,168,67,0.3);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+  .lawyer-btn:hover{background:var(--gold);color:#0d1117;}
+  .how-section{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:60px 24px;margin-bottom:48px;}
+  .how-inner{max-width:1200px;margin:0 auto;}
+  .how-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;text-align:center;margin-bottom:8px;}
+  .how-sub{text-align:center;color:var(--text-muted);margin-bottom:40px;}
+  .how-tabs{display:flex;gap:8px;justify-content:center;margin-bottom:36px;flex-wrap:wrap;}
+  .how-tab{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-family:inherit;transition:all 0.2s;}
+  .how-tab.active{background:var(--gold-dim);color:var(--gold);border-color:rgba(212,168,67,0.4);}
+  .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;}
+  .step{text-align:center;}
+  .step-num{width:48px;height:48px;border-radius:50%;margin:0 auto 14px;background:var(--gold-dim);border:1px solid rgba(212,168,67,0.3);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);}
+  .step h4{font-size:14px;font-weight:600;margin-bottom:6px;}
+  .step p{font-size:13px;color:var(--text-muted);line-height:1.6;}
+  .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+  .plan{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:28px 24px;position:relative;}
+  .plan.featured{border-color:var(--gold);background:linear-gradient(160deg,var(--surface) 0%,rgba(212,168,67,0.04) 100%);}
+  .plan-badge-top{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:#0d1117;font-size:11px;font-weight:700;padding:3px 12px;border-radius:10px;white-space:nowrap;}
+  .plan-name{font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+  .plan-price{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;margin-bottom:4px;}
+  .plan-price span{font-size:14px;font-weight:400;color:var(--text-muted);font-family:'IBM Plex Sans';}
+  .plan-desc{font-size:13px;color:var(--text-muted);margin-bottom:20px;}
+  .plan-features{list-style:none;margin-bottom:24px;}
+  .plan-features li{font-size:13px;padding:6px 0;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border);color:var(--text-muted);}
+  .plan-features li:last-child{border-bottom:none;}
+  .plan-features li.ok{color:var(--text);}
+  .plan-features li.ok::before{content:'✓';color:var(--green);font-size:12px;flex-shrink:0;}
+  .plan-features li.no::before{content:'–';color:var(--text-dim);flex-shrink:0;}
+  .plan-cta{width:100%;padding:10px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;border:1px solid var(--border);background:transparent;color:var(--text);}
+  .plan.featured .plan-cta{background:var(--gold);color:#0d1117;border-color:var(--gold);}
+  .plan-cta:hover{border-color:var(--gold);color:var(--gold);}
+  .plan.featured .plan-cta:hover{background:var(--gold-light);color:#0d1117;}
+  .modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto;}
+  .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;}
+  .modal-close:hover{color:var(--text);}
+  .modal h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:6px;}
+  .modal-sub{font-size:13px;color:var(--text-muted);margin-bottom:24px;}
+  .form-group{margin-bottom:16px;}
+  .form-label{font-size:13px;font-weight:500;margin-bottom:6px;display:block;color:var(--text-muted);}
+  .form-input,.form-select,.form-textarea{width:100%;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border 0.2s;}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);}
+  .form-textarea{min-height:100px;resize:vertical;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-submit{width:100%;padding:12px;background:var(--gold);color:#0d1117;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.2s;margin-top:8px;}
+  .form-submit:hover{background:var(--gold-light);}
+  .modal-tabs{display:flex;gap:0;margin-bottom:24px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .modal-tab{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:500;cursor:pointer;background:transparent;border:none;color:var(--text-muted);font-family:inherit;transition:all 0.2s;}
+  .modal-tab.active{background:var(--gold-dim);color:var(--gold);}
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:40px 24px 24px;}
+  .footer-inner{max-width:1200px;margin:0 auto;}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:32px;}
+  .footer-brand .logo{margin-bottom:12px;}
+  .footer-brand p{font-size:13px;color:var(--text-muted);line-height:1.6;}
+  .footer-col h4{font-size:13px;font-weight:600;margin-bottom:12px;}
+  .footer-col a{display:block;font-size:13px;color:var(--text-muted);text-decoration:none;margin-bottom:8px;transition:color 0.2s;}
+  .footer-col a:hover{color:var(--gold);}
+  .footer-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-dim);flex-wrap:wrap;gap:12px;}
+  .toast{position:fixed;bottom:24px;right:24px;z-index:300;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 18px;font-size:14px;color:var(--text);display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  @media(max-width:768px){
+    .nav-links{display:none!important;}.hamburger{display:flex;}.hero{padding:40px 16px 32px;}.hero-stats{gap:20px;}.stat-num{font-size:22px;}.cards-grid{grid-template-columns:1fr;gap:12px;}.lawyer-grid{grid-template-columns:1fr 1fr;}.steps-grid{grid-template-columns:1fr 1fr;gap:16px;}.footer-grid{grid-template-columns:1fr 1fr;gap:20px;}.form-row{grid-template-columns:1fr;}.pricing-grid{grid-template-columns:1fr;}.tabs-section,.section{padding:0 12px;}.how-section{padding:36px 12px;}nav{padding:0 12px;}.search-bar{flex-direction:column;gap:8px;}.filter-select,.post-btn{width:100%;}.post-btn{padding:12px;}.card{padding:16px;}.hero-cta{flex-direction:column;max-width:320px;margin:0 auto;}.cta-btn{width:100%;justify-content:center;}.mobile-fab{display:flex;}body{padding-bottom:72px;}.modal{padding:24px 16px;border-radius:16px 16px 0 0;align-self:flex-end;max-height:92vh;}.modal-overlay{align-items:flex-end;}.tab{padding:10px 14px;font-size:13px;}.section-title{font-size:18px;}.how-title{font-size:22px;}.plan{padding:24px 16px;}
+  }
+  @media(max-width:480px){.lawyer-grid{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr;}.how-tabs{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;scrollbar-width:none;justify-content:flex-start;}.how-tabs::-webkit-scrollbar{display:none;}.steps-grid{grid-template-columns:1fr;}.stat{min-width:70px;}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .card,.lawyer-card,.plan{animation:fadeIn 0.4s ease both;}
+  .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.1s}.card:nth-child(3){animation-delay:.15s}.card:nth-child(4){animation-delay:.2s}.card:nth-child(5){animation-delay:.25s}.card:nth-child(6){animation-delay:.3s}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">⚖️ Yurpom<span id="logo-sub">.kg</span></div>
+  <div class="nav-links">
+    <button class="nav-btn ghost" id="n-services" onclick="showTab('offers')">Услуги</button>
+    <button class="nav-btn ghost" id="n-requests" onclick="showTab('requests')">Заявки</button>
+    <button class="nav-btn ghost" id="n-vacancies" onclick="showTab('vacancies')">Вакансии</button>
+    <button class="nav-btn ghost" id="n-lawyers" onclick="document.getElementById('lawyers').scrollIntoView({behavior:'smooth'})">Юристы</button>
+    <button class="nav-btn ghost" id="n-login" onclick="window._goToLogin?window._goToLogin():openModal('login')">Войти</button>
+    <button class="nav-btn primary" id="n-post" onclick="openModal('post')">+ Разместить</button>
+    <div class="lang-switch">
+      <button onclick="setLang('ru')" id="lbtn-ru" class="active">РУС</button>
+      <button onclick="setLang('ky')" id="lbtn-ky">КЫР</button>
+    </div>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <button class="nav-btn ghost" id="mn-services" onclick="showTab('offers');closeMenu()">💼 Услуги юристов</button>
+  <button class="nav-btn ghost" id="mn-requests" onclick="showTab('requests');closeMenu()">🙋 Заявки клиентов</button>
+  <button class="nav-btn ghost" id="mn-vacancies" onclick="showTab('vacancies');closeMenu()">📌 Вакансии</button>
+  <button class="nav-btn ghost" id="mn-lawyers" onclick="document.getElementById('lawyers').scrollIntoView({behavior:'smooth'});closeMenu()">⭐ Топ юристы</button>
+  <button class="nav-btn ghost" id="mn-login" onclick="openModal('login');closeMenu()">Войти</button>
+  <button class="nav-btn primary" id="mn-post" onclick="openModal('post');closeMenu()">+ Разместить</button>
+  <div class="lang-switch" style="margin-top:8px;justify-content:center;padding:4px;">
+    <button onclick="setLang('ru');closeMenu()" id="lbtn-ru-m" class="active" style="padding:8px 28px;font-size:14px;">РУС</button>
+    <button onclick="setLang('ky');closeMenu()" id="lbtn-ky-m" style="padding:8px 28px;font-size:14px;">КЫР</button>
+  </div>
+</div>
+
+<div class="mobile-fab">
+  <button class="fab-secondary" id="fab-login" onclick="openModal('login')">👤 Войти</button>
+  <button class="fab-primary" id="fab-post" onclick="openModal('post')">+ Разместить</button>
+</div>
+
+<div class="hero">
+  <div class="hero-badge" id="h-badge">🇰🇬 Только для Кыргызстана</div>
+  <h1 id="h-title">Юридические услуги<br><em>для людей и бизнеса</em></h1>
+  <p id="h-sub">Найдите опытного адвоката, разместите заявку на юридическую помощь или опубликуйте вакансию для юристов КР.</p>
+  <div class="hero-cta">
+    <button class="cta-btn gold" id="h-cta1" onclick="openModal('post')">📋 Разместить объявление</button>
+    <button class="cta-btn outline" id="h-cta2" onclick="showTab('offers')">🔍 Найти юриста</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">340+</div><div class="stat-label" id="st1">Активных объявлений</div></div>
+    <div class="stat"><div class="stat-num">120+</div><div class="stat-label" id="st2">Адвокатов и юристов</div></div>
+    <div class="stat"><div class="stat-num">14</div><div class="stat-label" id="st3">Областей права</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label" id="st4">Языка (РУС/КЫР)</div></div>
+  </div>
+</div>
+
+<div class="tabs-section">
+  <div class="tabs-row">
+    <button class="tab active" id="tab-offers" onclick="showTab('offers',this)">💼 Услуги юристов</button>
+    <button class="tab" id="tab-requests" onclick="showTab('requests',this)">🙋 Заявки клиентов</button>
+    <button class="tab" id="tab-vacancies" onclick="showTab('vacancies',this)">📌 Вакансии</button>
+  </div>
+  <div class="search-bar">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="search-input" placeholder="Поиск по ключевым словам..." oninput="renderCards(currentTab,this.value)">
+    </div>
+    <select class="filter-select" id="filter-area" onchange="renderCards(currentTab,document.getElementById('search-input').value)">
+      <option value="" id="fa-all">Все отрасли</option>
+      <option id="fa-civil">Гражданское право</option>
+      <option id="fa-criminal">Уголовное право</option>
+      <option id="fa-family">Семейное право</option>
+      <option id="fa-land">Земельное право</option>
+      <option id="fa-tax">Налоговое право</option>
+      <option id="fa-labor">Трудовое право</option>
+      <option id="fa-corp">Корпоративное право</option>
+      <option id="fa-admin">Административное право</option>
+    </select>
+    <select class="filter-select">
+      <option id="fc-all">Все города</option>
+      <option>Бишкек</option><option>Ош</option><option>Жалал-Абад</option><option>Каракол</option><option>Нарын</option>
+    </select>
+    <button class="post-btn" id="btn-post-s" onclick="openModal('post')">+ Разместить</button>
+  </div>
+  <div class="cards-grid" id="cards-container"></div>
+</div>
+
+<div class="section" id="lawyers">
+  <div class="section-head">
+    <div class="section-title" id="lawyers-title">⭐ Топ юристы платформы</div>
+    <a href="#" class="section-link" id="lawyers-all">Все юристы →</a>
+  </div>
+  <div class="lawyer-grid">
+    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+      <div class="lawyer-avatar">А</div>
+      <div class="lawyer-name">Аскарова Динара</div>
+      <div class="lawyer-spec" id="ls1">Семейное • Гражданское</div>
+      <div class="lawyer-stars">★★★★★ <span style="color:var(--text-muted);font-size:11px">(42)</span></div>
+      <div class="lawyer-info" id="li1">Адвокат, стаж 12 лет · Бишкек</div>
+      <button class="lawyer-btn" id="lbw1" onclick="event.stopPropagation();showToast(T('contact_open'))">Написать</button>
+    </div>
+    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+      <div class="lawyer-avatar">М</div>
+      <div class="lawyer-name">Мамытов Эрлан</div>
+      <div class="lawyer-spec" id="ls2">Уголовное • Административное</div>
+      <div class="lawyer-stars">★★★★☆ <span style="color:var(--text-muted);font-size:11px">(28)</span></div>
+      <div class="lawyer-info" id="li2">Адвокат, стаж 8 лет · Бишкек</div>
+      <button class="lawyer-btn" id="lbw2" onclick="event.stopPropagation();showToast(T('contact_open'))">Написать</button>
+    </div>
+    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+      <div class="lawyer-avatar">К</div>
+      <div class="lawyer-name">Кенжебаева Айгуль</div>
+      <div class="lawyer-spec" id="ls3">Корпоративное • Налоговое</div>
+      <div class="lawyer-stars">★★★★★ <span style="color:var(--text-muted);font-size:11px">(61)</span></div>
+      <div class="lawyer-info" id="li3">Юрист, стаж 15 лет · Бишкек, Ош</div>
+      <button class="lawyer-btn" id="lbw3" onclick="event.stopPropagation();showToast(T('contact_open'))">Написать</button>
+    </div>
+    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+      <div class="lawyer-avatar">Т</div>
+      <div class="lawyer-name">Токтобеков Азамат</div>
+      <div class="lawyer-spec" id="ls4">Земельное • Гражданское</div>
+      <div class="lawyer-stars">★★★★☆ <span style="color:var(--text-muted);font-size:11px">(19)</span></div>
+      <div class="lawyer-info" id="li4">Юрисконсульт, стаж 6 лет · Ош</div>
+      <button class="lawyer-btn" id="lbw4" onclick="event.stopPropagation();showToast(T('contact_open'))">Написать</button>
+    </div>
+  </div>
+</div>
+
+<div class="how-section">
+  <div class="how-inner">
+    <div class="how-title" id="how-title">Как работает Yurpom.kg?</div>
+    <div class="how-sub" id="how-sub">Просто, быстро, без посредников</div>
+    <div class="how-tabs">
+      <button class="how-tab active" id="ht-client" onclick="switchHow('client',this)">🙋 Я ищу юриста</button>
+      <button class="how-tab" id="ht-lawyer" onclick="switchHow('lawyer',this)">⚖️ Я юрист</button>
+      <button class="how-tab" id="ht-employer" onclick="switchHow('employer',this)">🏢 Я работодатель</button>
+    </div>
+    <div class="steps-grid" id="how-steps"></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-head">
+    <div class="section-title" id="pricing-title">💳 Тарифы для профессионалов</div>
+  </div>
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-name" id="p1-name">Базовый</div>
+      <div class="plan-price">0 <span id="p-month">сом/мес</span></div>
+      <div class="plan-desc" id="p1-desc">Для начала работы на платформе</div>
+      <ul class="plan-features">
+        <li class="ok" id="pf1-1">1 активное объявление</li>
+        <li class="ok" id="pf1-2">Базовый профиль</li>
+        <li class="ok" id="pf1-3">Получение заявок</li>
+        <li class="no" id="pf-hi">Приоритет в поиске</li>
+        <li class="no" id="pf-ve">Верификация адвоката</li>
+        <li class="no" id="pf-an">Аналитика просмотров</li>
+      </ul>
+      <button class="plan-cta" id="pc1" onclick="openModal('register')">Начать бесплатно</button>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge-top" id="p-pop">🔥 Популярный</div>
+      <div class="plan-name" id="p2-name">Профи</div>
+      <div class="plan-price">590 <span id="p-month2">сом/мес</span></div>
+      <div class="plan-desc" id="p2-desc">Дешевле одной вакансии на hh.kg — даёт в 10× больше</div>
+      <ul class="plan-features">
+        <li class="ok" id="pf2-1">До 10 объявлений</li>
+        <li class="ok" id="pf2-2">Расширенный профиль + фото</li>
+        <li class="ok" id="pf-ve2">Верификация адвоката</li>
+        <li class="ok" id="pf-hi2">Приоритет в поиске</li>
+        <li class="ok" id="pf-an2">Аналитика просмотров</li>
+        <li class="no" id="pf-top">Топ на главной</li>
+      </ul>
+      <button class="plan-cta" id="pc2" onclick="openModal('register')">Подключить</button>
+    </div>
+    <div class="plan">
+      <div class="plan-name" id="p3-name">Компания</div>
+      <div class="plan-price">1 490 <span id="p-month3">сом/мес</span></div>
+      <div class="plan-desc" id="p3-desc">Для юридических фирм и коллегий</div>
+      <ul class="plan-features">
+        <li class="ok" id="pf3-1">Безлимит объявлений</li>
+        <li class="ok" id="pf3-2">Страница компании</li>
+        <li class="ok" id="pf3-3">Несколько сотрудников</li>
+        <li class="ok" id="pf-top2">Топ в каталоге</li>
+        <li class="ok" id="pf3-5">Баннер на главной</li>
+        <li class="ok" id="pf3-6">API-интеграция</li>
+      </ul>
+      <button class="plan-cta" id="pc3" onclick="openModal('register')">Связаться</button>
+    </div>
+  </div>
+  <div style="margin-top:16px;font-size:13px;color:var(--text-muted);text-align:center;" id="pricing-note">
+    💡 На headhunter.kg одна вакансия = 700–1 300 сом. У нас 10 объявлений — <strong style="color:var(--gold)">590 сом/мес</strong>. Оплата: DemirBank, MBank, Optima
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">⚖️ Yurpom<span>.kg</span></div>
+        <p id="f-about">Специализированная платформа для юридического сообщества Кыргызстана. Соединяем клиентов с профессионалами.</p>
+      </div>
+      <div class="footer-col">
+        <h4 id="f-platform">Платформа</h4>
+        <a href="#" id="f-p1">Услуги юристов</a>
+        <a href="#" id="f-p2">Заявки клиентов</a>
+        <a href="#" id="f-p3">Вакансии</a>
+        <a href="#" id="f-p4">Каталог юристов</a>
+      </div>
+      <div class="footer-col">
+        <h4 id="f-lawyers">Юристам</h4>
+        <a href="#" id="f-reg">Зарегистрироваться</a>
+        <a href="#" id="f-tar">Тарифы</a>
+        <a href="#" id="f-ver">Верификация</a>
+        <a href="#" id="f-par">Партнёрство</a>
+      </div>
+      <div class="footer-col">
+        <h4 id="f-support">Поддержка</h4>
+        <a href="#">WhatsApp</a><a href="#">Telegram</a>
+        <a href="#" id="f-abt">О платформе</a>
+        <a href="#" id="f-rul">Правила</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="f-copy">© 2025 Yurpom.kg. Бишкек, Кыргызстан</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:12px;color:var(--text-dim);" id="f-lang-label">Язык / Тил:</span>
+        <div class="lang-switch">
+          <button onclick="setLang('ru')" id="lbtn-ru-f" class="active">РУС</button>
+          <button onclick="setLang('ky')" id="lbtn-ky-f">КЫР</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- POST MODAL -->
+<div class="modal-overlay" id="modal-post">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('post')">✕</button>
+    <h2 id="m-post-title">Разместить объявление</h2>
+    <p class="modal-sub" id="m-post-sub">Это займёт 2 минуты. Публикация бесплатна.</p>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="mt-offer" data-type="offer" onclick="switchModalTab(this)">💼 Услуга</button>
+      <button class="modal-tab" id="mt-request" data-type="request" onclick="switchModalTab(this)">🙋 Заявка</button>
+      <button class="modal-tab" id="mt-vacancy" data-type="vacancy" onclick="switchModalTab(this)">📌 Вакансия</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="fl-title">Заголовок объявления</label>
+      <input class="form-input" id="fi-title" placeholder="Например: Адвокат по семейным делам, стаж 10 лет">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" id="fl-area">Отрасль права</label>
+        <select class="form-select" id="filter-area-modal">
+          <option id="fo-civil">Гражданское право</option><option id="fo-crim">Уголовное право</option>
+          <option id="fo-fam">Семейное право</option><option id="fo-land">Земельное право</option>
+          <option id="fo-tax">Налоговое право</option><option id="fo-lab">Трудовое право</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="fl-city">Город</label>
+        <select class="form-select" id="city-modal">
+          <option>Бишкек</option><option>Ош</option><option>Жалал-Абад</option><option id="fo-online">Онлайн</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="fl-desc">Описание</label>
+      <textarea class="form-textarea" id="fi-desc" placeholder="Опишите услуги, опыт, специализацию..."></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" id="fl-price">Стоимость</label>
+        <input class="form-input" id="fi-price" placeholder="2000–5000 сом">
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="fl-contact">WhatsApp</label>
+        <input class="form-input" id="fi-contact" placeholder="+996 XXX XXX XXX">
+      </div>
+    </div>
+    <button class="form-submit" id="btn-publish" onclick="submitPost()">Опубликовать бесплатно</button>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('login')">✕</button>
+    <h2 id="m-login-title">Вход / Регистрация</h2>
+    <p class="modal-sub" id="m-login-sub">Для юристов и клиентов. Регистрация займёт минуту.</p>
+    <div class="form-group">
+      <label class="form-label" id="fl-phone">Телефон (WhatsApp)</label>
+      <input class="form-input" placeholder="+996 XXX XXX XXX">
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="fl-role">Вы:</label>
+      <select class="form-select">
+        <option id="ro-lawyer">Адвокат / Юрист</option>
+        <option id="ro-company">Представитель компании</option>
+        <option id="ro-client">Клиент (физ. лицо)</option>
+      </select>
+    </div>
+    <button class="form-submit" id="btn-sms" onclick="showToast(T('sms_sent'))">Получить SMS-код</button>
+  </div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div class="modal-overlay" id="modal-register">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('register')">✕</button>
+    <h2 id="m-reg-title">Регистрация юриста</h2>
+    <p class="modal-sub" id="m-reg-sub">Создайте профиль и начните получать клиентов</p>
+    <div class="form-group">
+      <label class="form-label" id="fl-fio">ФИО</label>
+      <input class="form-input" id="fi-fio" placeholder="Фамилия Имя Отчество">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" id="fl-phone2">Телефон</label>
+        <input class="form-input" id="fi-contact" placeholder="+996 XXX XXX XXX">
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="fl-exp">Стаж (лет)</label>
+        <input class="form-input" type="number" placeholder="5">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="fl-spec">Специализация</label>
+      <select class="form-select">
+        <option id="sp-adv">Адвокат (лицензия АКТ)</option>
+        <option id="sp-jur">Юрисконсульт</option>
+        <option id="sp-not">Нотариус</option>
+        <option id="sp-med">Медиатор</option>
+      </select>
+    </div>
+    <button class="form-submit" id="btn-register" onclick="showToast(T('profile_created'))">Зарегистрироваться</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span>✅</span><span id="toast-msg"></span></div>
+
+<script>
+// ── TRANSLATIONS ──
+const TR = {
+ru:{
+  n_services:'Услуги', n_requests:'Заявки', n_vacancies:'Вакансии', n_lawyers:'Юристы',
+  n_login:'Войти', n_post:'+ Разместить',
+  mn_services:'💼 Услуги юристов', mn_requests:'🙋 Заявки клиентов', mn_vacancies:'📌 Вакансии',
+  mn_lawyers:'⭐ Топ юристы', fab_login:'👤 Войти', fab_post:'+ Разместить',
+  h_badge:'🇰🇬 Только для Кыргызстана',
+  h_title:'Юридические услуги<br><em>для людей и бизнеса</em>',
+  h_sub:'Найдите опытного адвоката, разместите заявку на юридическую помощь или опубликуйте вакансию для юристов КР.',
+  h_cta1:'📋 Разместить объявление', h_cta2:'🔍 Найти юриста',
+  st1:'Активных объявлений', st2:'Адвокатов и юристов', st3:'Областей права', st4:'Языка (РУС/КЫР)',
+  tab_offers:'💼 Услуги юристов', tab_requests:'🙋 Заявки клиентов', tab_vacancies:'📌 Вакансии',
+  search_ph:'Поиск по ключевым словам...',
+  fa_all:'Все отрасли', fa_civil:'Гражданское право', fa_criminal:'Уголовное право',
+  fa_family:'Семейное право', fa_land:'Земельное право', fa_tax:'Налоговое право',
+  fa_labor:'Трудовое право', fa_corp:'Корпоративное право', fa_admin:'Административное право',
+  fc_all:'Все города', btn_post_s:'+ Разместить',
+  lawyers_title:'⭐ Топ юристы платформы', lawyers_all:'Все юристы →',
+  ls1:'Семейное • Гражданское', ls2:'Уголовное • Административное',
+  ls3:'Корпоративное • Налоговое', ls4:'Земельное • Гражданское',
+  li1:'Адвокат, стаж 12 лет · Бишкек', li2:'Адвокат, стаж 8 лет · Бишкек',
+  li3:'Юрист, стаж 15 лет · Бишкек, Ош', li4:'Юрисконсульт, стаж 6 лет · Ош',
+  lbw:'Написать',
+  how_title:'Как работает Yurpom.kg?', how_sub:'Просто, быстро, без посредников',
+  ht_client:'🙋 Я ищу юриста', ht_lawyer:'⚖️ Я юрист', ht_employer:'🏢 Я работодатель',
+  pricing_title:'💳 Тарифы для профессионалов', p_month:'сом/мес',
+  p1_name:'Базовый', p1_desc:'Для начала работы на платформе',
+  pf1_1:'1 активное объявление', pf1_2:'Базовый профиль', pf1_3:'Получение заявок',
+  pf_hi:'Приоритет в поиске', pf_ve:'Верификация адвоката', pf_an:'Аналитика просмотров',
+  p_pop:'🔥 Популярный',
+  p2_name:'Профи', p2_desc:'Дешевле одной вакансии на hh.kg — даёт в 10× больше',
+  pf2_1:'До 10 объявлений', pf2_2:'Расширенный профиль + фото', pf_top:'Топ на главной',
+  p3_name:'Компания', p3_desc:'Для юридических фирм и коллегий',
+  pf3_1:'Безлимит объявлений', pf3_2:'Страница компании', pf3_3:'Несколько сотрудников',
+  pf3_5:'Баннер на главной', pf3_6:'API-интеграция',
+  pc1:'Начать бесплатно', pc2:'Подключить', pc3:'Связаться',
+  pricing_note:'💡 На headhunter.kg одна вакансия = 700–1 300 сом. У нас 10 объявлений — <strong style="color:var(--gold)">590 сом/мес</strong>. Оплата: DemirBank, MBank, Optima',
+  f_platform:'Платформа', f_lawyers:'Юристам', f_support:'Поддержка',
+  f_about:'Специализированная платформа для юридического сообщества Кыргызстана. Соединяем клиентов с профессионалами.',
+  f_p1:'Услуги юристов', f_p2:'Заявки клиентов', f_p3:'Вакансии', f_p4:'Каталог юристов',
+  f_reg:'Зарегистрироваться', f_tar:'Тарифы', f_ver:'Верификация', f_par:'Партнёрство',
+  f_abt:'О платформе', f_rul:'Правила', f_copy:'© 2025 Yurpom.kg. Бишкек, Кыргызстан',
+  f_lang_label:'Язык / Тил:',
+  m_post_title:'Разместить объявление', m_post_sub:'Это займёт 2 минуты. Публикация бесплатна.',
+  mt_offer:'💼 Услуга', mt_request:'🙋 Заявка', mt_vacancy:'📌 Вакансия',
+  fl_title:'Заголовок объявления', fi_title:'Например: Адвокат по семейным делам, стаж 10 лет',
+  fl_area:'Отрасль права', fl_city:'Город', fo_online:'Онлайн / Дистанционно',
+  fl_desc:'Описание', fi_desc:'Опишите услуги, опыт, специализацию...',
+  fl_price:'Стоимость', fi_price:'2000–5000 сом', fl_contact:'WhatsApp',
+  fo_civil:'Гражданское право', fo_crim:'Уголовное право', fo_fam:'Семейное право',
+  fo_land:'Земельное право', fo_tax:'Налоговое право', fo_lab:'Трудовое право',
+  btn_publish:'Опубликовать бесплатно',
+  m_login_title:'Вход / Регистрация', m_login_sub:'Для юристов и клиентов. Регистрация займёт минуту.',
+  fl_phone:'Телефон (WhatsApp)', fl_role:'Вы:',
+  ro_lawyer:'Адвокат / Юрист', ro_company:'Представитель компании', ro_client:'Клиент (физ. лицо)',
+  btn_sms:'Получить SMS-код',
+  m_reg_title:'Регистрация юриста', m_reg_sub:'Создайте профиль и начните получать клиентов',
+  fl_fio:'ФИО', fi_fio:'Фамилия Имя Отчество', fl_exp:'Стаж (лет)',
+  fl_spec:'Специализация',
+  sp_adv:'Адвокат (лицензия АКТ)', sp_jur:'Юрисконсульт', sp_not:'Нотариус', sp_med:'Медиатор',
+  btn_register:'Зарегистрироваться',
+  sms_sent:'✅ SMS-код отправлен', profile_created:'🎉 Профиль создан! Проверяем данные.',
+  post_success:'🎉 Объявление опубликовано! Ожидайте откликов.',
+  profile_opened:'Открываем профиль...', contact_open:'Открываем контакт...',
+  card_open:'Открываем объявление...', no_results:'😔 Объявлений не найдено',
+  badge_offer:'💼 Услуга', badge_request:'🙋 Заявка', badge_vacancy:'📌 Вакансия', badge_urgent:'🔥 Срочно',
+  verified:'✓ Верифицирован', action_write:'Написать', action_respond:'Откликнуться',
+  logo_sub:'.kg — ЮрПом'
+},
+ky:{
+  n_services:'Кызматтар', n_requests:'Арыздар', n_vacancies:'Бош орундар', n_lawyers:'Юристтер',
+  n_login:'Кирүү', n_post:'+ Жайгаштыруу',
+  mn_services:'💼 Юристтердин кызматтары', mn_requests:'🙋 Кардарлардын арыздары', mn_vacancies:'📌 Бош орундар',
+  mn_lawyers:'⭐ Мыкты юристтер', fab_login:'👤 Кирүү', fab_post:'+ Жайгаштыруу',
+  h_badge:'🇰🇬 Кыргызстан үчүн гана',
+  h_title:'Юридикалык кызматтар<br><em>адамдар жана бизнес үчүн</em>',
+  h_sub:'Тажрыйбалуу адвокат табыңыз, юридикалык жардамга арыз жайгаштырыңыз же КР юристтери үчүн бош орун жарыялаңыз.',
+  h_cta1:'📋 Жарыя жайгаштыруу', h_cta2:'🔍 Юрист издөө',
+  st1:'Активдүү жарыялар', st2:'Адвокаттар жана юристтер', st3:'Укук тармактары', st4:'Тил (РУС/КЫР)',
+  tab_offers:'💼 Юристтердин кызматтары', tab_requests:'🙋 Кардарлардын арыздары', tab_vacancies:'📌 Бош орундар',
+  search_ph:'Ачкыч сөздөр боюнча издөө...',
+  fa_all:'Бардык тармактар', fa_civil:'Жарандык укук', fa_criminal:'Кылмыш укугу',
+  fa_family:'Үй-бүлө укугу', fa_land:'Жер укугу', fa_tax:'Салык укугу',
+  fa_labor:'Эмгек укугу', fa_corp:'Корпоративдик укук', fa_admin:'Административдик укук',
+  fc_all:'Бардык шаарлар', btn_post_s:'+ Жайгаштыруу',
+  lawyers_title:'⭐ Платформанын мыкты юристтери', lawyers_all:'Бардык юристтер →',
+  ls1:'Үй-бүлө • Жарандык', ls2:'Кылмыш • Административдик',
+  ls3:'Корпоративдик • Салык', ls4:'Жер • Жарандык',
+  li1:'Адвокат, стажы 12 жыл · Бишкек', li2:'Адвокат, стажы 8 жыл · Бишкек',
+  li3:'Юрист, стажы 15 жыл · Бишкек, Ош', li4:'Юрисконсульт, стажы 6 жыл · Ош',
+  lbw:'Жазуу',
+  how_title:'Yurpom.kg кантип иштейт?', how_sub:'Жөнөкөй, тез, делдечисиз',
+  ht_client:'🙋 Мен юрист издейм', ht_lawyer:'⚖️ Мен юристмин', ht_employer:'🏢 Мен иш берүүчүмүн',
+  pricing_title:'💳 Профессионалдар үчүн тарифтер', p_month:'сом/ай',
+  p1_name:'Негизги', p1_desc:'Платформада иш баштоо үчүн',
+  pf1_1:'1 активдүү жарыя', pf1_2:'Негизги профиль', pf1_3:'Арыздарды кабыл алуу',
+  pf_hi:'Издөөдө артыкчылык', pf_ve:'Адвокатты текшерүү', pf_an:'Аналитика',
+  p_pop:'🔥 Популярдуу',
+  p2_name:'Профи', p2_desc:'hh.kg дагы бир бош орундан арзан — 10× берет',
+  pf2_1:'10 жарыяга чейин', pf2_2:'Кеңейтилген профиль + сүрөт', pf_top:'Башкы бетте топ',
+  p3_name:'Компания', p3_desc:'Юридикалык фирмалар жана коллегиялар үчүн',
+  pf3_1:'Чексиз жарыялар', pf3_2:'Компания барагы', pf3_3:'Бир нече кызматкер',
+  pf3_5:'Башкы бетте баннер', pf3_6:'API-интеграция',
+  pc1:'Акысыз баштоо', pc2:'Туташуу', pc3:'Байланышуу',
+  pricing_note:'💡 headhunter.kg дагы бир бош орун = 700–1 300 сом. Бизде 10 жарыя — <strong style="color:var(--gold)">590 сом/ай</strong>. Төлөм: DemirBank, MBank, Optima',
+  f_platform:'Платформа', f_lawyers:'Юристтерге', f_support:'Колдоо',
+  f_about:'Кыргызстандын юридикалык коомчулугу үчүн адистештирилген платформа.',
+  f_p1:'Юристтердин кызматтары', f_p2:'Кардарлардын арыздары', f_p3:'Бош орундар', f_p4:'Юристтер каталогу',
+  f_reg:'Катталуу', f_tar:'Тарифтер', f_ver:'Текшерүү', f_par:'Өнөктөштүк',
+  f_abt:'Платформа жөнүндө', f_rul:'Эрежелер', f_copy:'© 2025 Yurpom.kg — ЮрЖардам. Бишкек, Кыргызстан',
+  f_lang_label:'Тил / Язык:',
+  m_post_title:'Жарыя жайгаштыруу', m_post_sub:'Бул 2 мүнөт талап кылат. Жарыялоо акысыз.',
+  mt_offer:'💼 Кызмат', mt_request:'🙋 Арыз', mt_vacancy:'📌 Бош орун',
+  fl_title:'Жарыянын аталышы', fi_title:'Мисалы: Үй-бүлө иштери боюнча адвокат, стажы 10 жыл',
+  fl_area:'Укук тармагы', fl_city:'Шаар', fo_online:'Онлайн / Алыстан',
+  fl_desc:'Сүрөттөмө', fi_desc:'Кызматтарыңызды, тажрыйбаңызды сүрөттөңүз...',
+  fl_price:'Баасы', fi_price:'2000–5000 сом', fl_contact:'WhatsApp',
+  fo_civil:'Жарандык укук', fo_crim:'Кылмыш укугу', fo_fam:'Үй-бүлө укугу',
+  fo_land:'Жер укугу', fo_tax:'Салык укугу', fo_lab:'Эмгек укугу',
+  btn_publish:'Акысыз жарыялоо',
+  m_login_title:'Кирүү / Каттоо', m_login_sub:'Юристтер жана кардарлар үчүн. Каттоо бир мүнөт.',
+  fl_phone:'Телефон (WhatsApp)', fl_role:'Сиз:',
+  ro_lawyer:'Адвокат / Юрист', ro_company:'Компания өкүлү', ro_client:'Кардар (жеке адам)',
+  btn_sms:'SMS-код алуу',
+  m_reg_title:'Юристти каттоо', m_reg_sub:'Профиль түзүп, кардарлар ала баштаңыз',
+  fl_fio:'АФИ', fi_fio:'Фамилия Аты Атасынын аты', fl_exp:'Стаж (жыл)',
+  fl_spec:'Адистик',
+  sp_adv:'Адвокат (АКТ лицензиясы)', sp_jur:'Юрисконсульт', sp_not:'Нотариус', sp_med:'Медиатор',
+  btn_register:'Катталуу',
+  sms_sent:'✅ SMS-код жөнөтүлдү', profile_created:'🎉 Профиль түзүлдү! Текшеребиз.',
+  post_success:'🎉 Жарыяланды! Жооп күтүңүз.',
+  profile_opened:'Профиль ачылууда...', contact_open:'Байланыш ачылууда...',
+  card_open:'Жарыяланма ачылууда...', no_results:'😔 Жарыялар табылган жок',
+  badge_offer:'💼 Кызмат', badge_request:'🙋 Арыз', badge_vacancy:'📌 Бош орун', badge_urgent:'🔥 Шашылыш',
+  verified:'✓ Текшерилген', action_write:'Жазуу', action_respond:'Жооп берүү',
+  logo_sub:'.kg — ЮрЖардам'
+}};
+
+// ── CARD DATA ──
+const CARDS = {
+ru:{
+  offers:[
+    {type:'offer',urgent:false,title:'Адвокат по уголовным делам, стаж 14 лет',area:'Уголовное право',city:'Бишкек',price:'от 5 000 сом',desc:'Защита на следствии и в суде. Опыт ведения резонансных дел. Выезд по КР.',tags:['Защита в суде','Следствие','Апелляция'],verified:true},
+    {type:'offer',urgent:true,title:'Земельные споры и оформление недвижимости',area:'Земельное право',city:'Ош',price:'3 000–8 000 сом',desc:'Приватизация, кадастр, споры по участкам. Работаю онлайн по всем регионам.',tags:['Земля','Кадастр','Недвижимость'],verified:true},
+    {type:'offer',urgent:false,title:'Семейные дела: развод, раздел имущества',area:'Семейное право',city:'Бишкек',price:'от 2 500 сом',desc:'Бракоразводные процессы, алименты, усыновление. Консультация бесплатно.',tags:['Развод','Алименты','Дети'],verified:false},
+    {type:'offer',urgent:false,title:'Корпоративный юрист — аутсорсинг для бизнеса',area:'Корпоративное право',city:'Онлайн',price:'от 15 000 сом/мес',desc:'ОсОО, договорная работа, трудовые споры. Снимаю юридические риски бизнеса.',tags:['Бизнес','Договора','ОсОО'],verified:true},
+    {type:'offer',urgent:false,title:'Налоговые споры и проверки ГНС',area:'Налоговое право',city:'Бишкек',price:'от 10 000 сом',desc:'Обжалование решений ГНС, налоговая оптимизация, представительство в суде.',tags:['ГНС','НДС','Оптимизация'],verified:true},
+    {type:'offer',urgent:true,title:'Срочная юридическая помощь 24/7',area:'Гражданское право',city:'Бишкек',price:'Договорная',desc:'Задержание, обыск, арест имущества — экстренная помощь в любое время суток.',tags:['Срочно','24/7','Задержание'],verified:true},
+  ],
+  requests:[
+    {type:'request',urgent:false,title:'Нужен юрист по трудовому спору',area:'Трудовое право',city:'Бишкек',price:'до 3 000 сом',desc:'Незаконное увольнение. Нужна помощь с восстановлением на работе или компенсацией.',tags:['Увольнение','Трудовой спор'],verified:false},
+    {type:'request',urgent:true,title:'СРОЧНО: помощь с задержанием родственника',area:'Уголовное право',city:'Бишкек',price:'Договорная',desc:'Задержан вечером. Нужен адвокат для связи со следствием и встречи в ИВС.',tags:['Срочно','ИВС'],verified:false},
+    {type:'request',urgent:false,title:'Проверка договора купли-продажи квартиры',area:'Гражданское право',city:'Онлайн',price:'до 1 500 сом',desc:'Куплю квартиру, хочу проверить договор и историю права собственности.',tags:['Договор','Недвижимость'],verified:false},
+    {type:'request',urgent:false,title:'Регистрация ОсОО с иностранным учредителем',area:'Корпоративное право',city:'Бишкек',price:'до 5 000 сом',desc:'Нужна помощь с регистрацией компании, учредитель-гражданин РФ.',tags:['ОсОО','Иностранец'],verified:false},
+  ],
+  vacancies:[
+    {type:'vacancy',urgent:false,title:'Юрисконсульт в банк (штатный)',area:'Банковское право',city:'Бишкек',price:'от 35 000 сом',desc:'Крупный коммерческий банк ищет юрисконсульта. Опыт в банковской сфере от 2 лет.',tags:['Банк','Штатный'],verified:true},
+    {type:'vacancy',urgent:false,title:'Партнёр / старший адвокат в коллегию',area:'Гражданское право',city:'Бишкек',price:'Доля + оклад',desc:'Развивающаяся коллегия адвокатов ищет партнёра с наработанной клиентурой.',tags:['Партнёр','Коллегия'],verified:true},
+    {type:'vacancy',urgent:true,title:'Юрист-фрилансер для IT-компании',area:'IT-право',city:'Онлайн',price:'проект/час',desc:'Разовые и проектные задачи: договора с разработчиками, GDPR, интел. собственность.',tags:['IT','Фриланс'],verified:false},
+  ]
+},
+ky:{
+  offers:[
+    {type:'offer',urgent:false,title:'Кылмыш иштери боюнча адвокат, стажы 14 жыл',area:'Кылмыш укугу',city:'Бишкек',price:'5 000 сомдон',desc:'Тергөөдө жана сотто коргоо. Резонанстуу иштерде тажрыйба. КР боюнча чыгуу.',tags:['Сотто коргоо','Тергөө','Апелляция'],verified:true},
+    {type:'offer',urgent:true,title:'Жер талаштары жана кыймылсыз мүлк',area:'Жер укугу',city:'Ош',price:'3 000–8 000 сом',desc:'Жекелештирүү, кадастр, участкалар боюнча талаштар. Бардык аймактар боюнча онлайн.',tags:['Жер','Кадастр','Мүлк'],verified:true},
+    {type:'offer',urgent:false,title:'Үй-бүлө иштери: ажырашуу, мүлк бөлүшүү',area:'Үй-бүлө укугу',city:'Бишкек',price:'2 500 сомдон',desc:'Ажырашуу процесстери, алимент, асырап алуу. Консультация акысыз.',tags:['Ажырашуу','Алимент'],verified:false},
+    {type:'offer',urgent:false,title:'Корпоративдик юрист — бизнес үчүн аутсорсинг',area:'Корпоративдик укук',city:'Онлайн',price:'15 000 сом/айдан',desc:'ЖЧК, келишим иштери, эмгек талаштары. Бизнестин юридикалык тобокелдиктерин алам.',tags:['Бизнес','Келишим'],verified:true},
+    {type:'offer',urgent:false,title:'Салык талаштары жана МСА текшерүүлөрү',area:'Салык укугу',city:'Бишкек',price:'10 000 сомдон',desc:'МСА чечимдерине нааразылык, салык оптималдаштыруу, сотто өкүлдүк.',tags:['МСА','КДС'],verified:true},
+    {type:'offer',urgent:true,title:'Шашылыш юридикалык жардам 24/7',area:'Жарандык укук',city:'Бишкек',price:'Макулдашуу боюнча',desc:'Камакка алуу, тинтүү, мүлктү арест — каалаган убакта шашылыш жардам.',tags:['Шашылыш','24/7'],verified:true},
+  ],
+  requests:[
+    {type:'request',urgent:false,title:'Эмгек талашы боюнча юрист керек',area:'Эмгек укугу',city:'Бишкек',price:'3 000 сомго чейин',desc:'Мыйзамсыз иштен чыгаруу. Иш ордуна кайтуу же компенсация алуу керек.',tags:['Иштен чыгаруу'],verified:false},
+    {type:'request',urgent:true,title:'ШАШЫЛЫШ: туугандын камакка алынышы',area:'Кылмыш укугу',city:'Бишкек',price:'Макулдашуу боюнча',desc:'Кечинде камакка алынды. Тергөө менен байланышуу үчүн адвокат керек.',tags:['Шашылыш','Камак'],verified:false},
+    {type:'request',urgent:false,title:'Батирди сатып алуу келишимин текшерүү',area:'Жарандык укук',city:'Онлайн',price:'1 500 сомго чейин',desc:'Батир сатып алам, келишимди жана менчик тарыхын текшергим келет.',tags:['Келишим','Мүлк'],verified:false},
+    {type:'request',urgent:false,title:'Чет элдик негиздөөчү менен ЖЧК каттоо',area:'Корпоративдик укук',city:'Бишкек',price:'5 000 сомго чейин',desc:'Компания каттоого жардам керек, негиздөөчү — Россия Федерациясынын жараны.',tags:['ЖЧК','Каттоо'],verified:false},
+  ],
+  vacancies:[
+    {type:'vacancy',urgent:false,title:'Банкка юрисконсульт (штаттык)',area:'Банк укугу',city:'Бишкек',price:'35 000 сомдон',desc:'Ири коммерциялык банк юрисконсульт издейт. Тажрыйба 2 жылдан.',tags:['Банк','Штаттык'],verified:true},
+    {type:'vacancy',urgent:false,title:'Коллегияга өнөктөш / улук адвокат',area:'Жарандык укук',city:'Бишкек',price:'Үлүш + маяна',desc:'Адвокаттар коллегиясы кардарлар базасы бар өнөктөшту издейт.',tags:['Өнөктөш','Коллегия'],verified:true},
+    {type:'vacancy',urgent:true,title:'IT-компания үчүн фрилансер-юрист',area:'IT-укук',city:'Онлайн',price:'долбоор/саат',desc:'Бир жолку жана долбоорлук тапшырмалар: келишим, GDPR, интел. менчик.',tags:['IT','Фриланс'],verified:false},
+  ]
+}};
+
+const HOW = {
+ru:{
+  client:[{h:'Опишите задачу',p:'Бесплатно разместите заявку — что нужно, какой регион и бюджет.'},{h:'Получайте отклики',p:'Юристы видят заявку и пишут напрямую в WhatsApp или Telegram.'},{h:'Выберите специалиста',p:'Смотрите профили, рейтинги, отзывы. Договоритесь без комиссии.'},{h:'Оставьте отзыв',p:'Помогите другим выбрать надёжного юриста — оцените работу.'}],
+  lawyer:[{h:'Создайте профиль',p:'Укажите специализацию, стаж, контакты. Получите значок верификации.'},{h:'Размещайте услуги',p:'Опубликуйте объявления о своих услугах. Базово — бесплатно.'},{h:'Находите клиентов',p:'Откликайтесь на заявки или получайте прямые обращения.'},{h:'Растите рейтинг',p:'Отзывы и рейтинг поднимают вас в поиске. Подключите Профи-тариф.'}],
+  employer:[{h:'Опишите вакансию',p:'Разместите вакансию — штатный юрист, фриланс или партнёр.'},{h:'Фильтруйте кандидатов',p:'Профиль каждого юриста с опытом, специализацией и отзывами.'},{h:'Пишите напрямую',p:'Свяжитесь с кандидатами без HR-посредников.'},{h:'Нашли — платите 0',p:'Никакой комиссии с найма. Только опциональный платный пакет.'}]
+},
+ky:{
+  client:[{h:'Маселенди жазыңыз',p:'Акысыз арыз жайгаштырыңыз — эмне керек, кайсы аймак жана бюджет.'},{h:'Жооптор алыңыз',p:'Юристтер арызды көрүп, WhatsApp же Telegram аркылуу жазат.'},{h:'Адисти тандаңыз',p:'Профилдерди, рейтингдерди, пикирлерди карап, өзүңүз макулдашыңыз.'},{h:'Пикир калтырыңыз',p:'Башкаларга ишенимдүү юрист тандоого жардам бериңиз.'}],
+  lawyer:[{h:'Профиль түзүңүз',p:'Адистикти, тажрыйбаны, байланышты жазыңыз. Текшерилген белгисин алыңыз.'},{h:'Кызматтарыңызды жайгаштырыңыз',p:'Жарыяларыңызды жарыялаңыз. Негизги — акысыз.'},{h:'Кардарлар табыңыз',p:'Кардарлардын арыздарына жооп бериңиз же түздөн-түз кайрылуулар алыңыз.'},{h:'Рейтингди өстүрүңүз',p:'Пикирлер жана рейтинг сизди издөөдө жогору көтөрөт.'}],
+  employer:[{h:'Бош орунду жазыңыз',p:'Жарыяны жайгаштырыңыз — штаттык же фрилансер-юрист.'},{h:'Талапкерлерди чыпкалаңыз',p:'Ар бир юристтин профили тажрыйбасы жана пикирлери менен.'},{h:'Түздөн-түз жазыңыз',p:'Ылайыктуу талапкерлерге HR-делдечисиз байланышыңыз.'},{h:'Таптыңыз — 0 төлөйсүз',p:'Жалдоодон эч кандай комиссия жок.'}]
+}};
+
+// ── STATE ──
+let lang='ru', currentTab='offers', howKey='client';
+function T(k){
+  const v = TR[lang] && TR[lang][k];
+  if(v !== undefined) return v;
+  const fallback = TR.ru[k];
+  if(fallback !== undefined) return fallback;
+  return k;
+}
+
+// ── SET LANG ──
+function setLang(l){
+  lang=l;
+  // update buttons
+  ['ru','ky'].forEach(x=>{
+    ['lbtn-'+x,'lbtn-'+x+'-m','lbtn-'+x+'-f'].forEach(id=>{
+      const b=document.getElementById(id);if(b)b.classList.toggle('active',x===l);
+    });
+  });
+  document.getElementById('logo-sub').textContent=T('logo_sub');
+  // translate all mapped IDs
+  const map={
+    'n-services':'n_services','n-requests':'n_requests','n-vacancies':'n_vacancies',
+    'n-lawyers':'n_lawyers','n-login':'n_login','n-post':'n_post',
+    'mn-services':'mn_services','mn-requests':'mn_requests','mn-vacancies':'mn_vacancies',
+    'mn-lawyers':'mn_lawyers','mn-login':'n_login','mn-post':'n_post',
+    'fab-login':'fab_login','fab-post':'fab_post',
+    'h-badge':'h_badge','h-title':'h_title','h-sub':'h_sub','h-cta1':'h_cta1','h-cta2':'h_cta2',
+    'st1':'st1','st2':'st2','st3':'st3','st4':'st4',
+    'tab-offers':'tab_offers','tab-requests':'tab_requests','tab-vacancies':'tab_vacancies',
+    'fa-all':'fa_all','fa-civil':'fa_civil','fa-criminal':'fa_criminal','fa-family':'fa_family',
+    'fa-land':'fa_land','fa-tax':'fa_tax','fa-labor':'fa_labor','fa-corp':'fa_corp','fa-admin':'fa_admin',
+    'fc-all':'fc_all','btn-post-s':'btn_post_s',
+    'lawyers-title':'lawyers_title','lawyers-all':'lawyers_all',
+    'ls1':'ls1','ls2':'ls2','ls3':'ls3','ls4':'ls4',
+    'li1':'li1','li2':'li2','li3':'li3','li4':'li4',
+    'lbw1':'lbw','lbw2':'lbw','lbw3':'lbw','lbw4':'lbw',
+    'how-title':'how_title','how-sub':'how_sub',
+    'ht-client':'ht_client','ht-lawyer':'ht_lawyer','ht-employer':'ht_employer',
+    'pricing-title':'pricing_title','p-month':'p_month','p-month2':'p_month','p-month3':'p_month',
+    'p1-name':'p1_name','p1-desc':'p1_desc',
+    'pf1-1':'pf1_1','pf1-2':'pf1_2','pf1-3':'pf1_3',
+    'pf-hi':'pf_hi','pf-ve':'pf_ve','pf-an':'pf_an',
+    'p-pop':'p_pop','p2-name':'p2_name','p2-desc':'p2_desc',
+    'pf2-1':'pf2_1','pf2-2':'pf2_2','pf-hi2':'pf_hi','pf-ve2':'pf_ve','pf-an2':'pf_an','pf-top':'pf_top',
+    'p3-name':'p3_name','p3-desc':'p3_desc',
+    'pf3-1':'pf3_1','pf3-2':'pf3_2','pf3-3':'pf3_3','pf-top2':'pf_top','pf3-5':'pf3_5','pf3-6':'pf3_6',
+    'pc1':'pc1','pc2':'pc2','pc3':'pc3','pricing-note':'pricing_note',
+    'f-platform':'f_platform','f-lawyers':'f_lawyers','f-support':'f_support',
+    'f-about':'f_about','f-p1':'f_p1','f-p2':'f_p2','f-p3':'f_p3','f-p4':'f_p4',
+    'f-reg':'f_reg','f-tar':'f_tar','f-ver':'f_ver','f-par':'f_par',
+    'f-abt':'f_abt','f-rul':'f_rul','f-copy':'f_copy','f-lang-label':'f_lang_label',
+    'm-post-title':'m_post_title','m-post-sub':'m_post_sub',
+    'mt-offer':'mt_offer','mt-request':'mt_request','mt-vacancy':'mt_vacancy',
+    'fl-title':'fl_title','fl-area':'fl_area','fl-city':'fl_city',
+    'fo-online':'fo_online','fl-desc':'fl_desc','fl-price':'fl_price','fl-contact':'fl_contact',
+    'fo-civil':'fo_civil','fo-crim':'fo_crim','fo-fam':'fo_fam',
+    'fo-land':'fo_land','fo-tax':'fo_tax','fo-lab':'fo_lab',
+    'btn-publish':'btn_publish',
+    'm-login-title':'m_login_title','m-login-sub':'m_login_sub',
+    'fl-phone':'fl_phone','fl-role':'fl_role',
+    'ro-lawyer':'ro_lawyer','ro-company':'ro_company','ro-client':'ro_client','btn-sms':'btn_sms',
+    'm-reg-title':'m_reg_title','m-reg-sub':'m_reg_sub',
+    'fl-fio':'fl_fio','fl-exp':'fl_exp','fl-spec':'fl_spec','fl-phone2':'fl_phone',
+    'sp-adv':'sp_adv','sp-jur':'sp_jur','sp-not':'sp_not','sp-med':'sp_med',
+    'btn-register':'btn_register'
+  };
+  Object.entries(map).forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const val=T(key);
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA') el.placeholder=val;
+    else el.innerHTML=val;
+  });
+  renderCards(currentTab,document.getElementById('search-input').value);
+  renderHow(howKey);
+}
+
+// ── RENDER CARDS ── (live Firestore data + static fallback)
+function renderCards(tab,query=''){
+  currentTab=tab;
+  const container=document.getElementById('cards-container');
+  let data=(window._liveListings&&window._liveListings[tab])
+    ? window._liveListings[tab]
+    : (CARDS[lang]||CARDS.ru)[tab]||[];
+  if(query){const q=query.toLowerCase();data=data.filter(c=>c.title.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q));}
+  const areaFilter=document.getElementById('filter-area')?.value||'';
+  if(areaFilter){data=data.filter(c=>c.area===areaFilter);}
+  const typeMap={offer:'badge-offer',request:'badge-request',vacancy:'badge-vacancy'};
+  if(!data.length){
+    container.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--text-muted)">${T('no_results')}</div>`;
+    return;
+  }
+  container.innerHTML=data.map(c=>{
+    const urgent=c.urgent?`<span class="card-badge badge-urgent">${T('badge_urgent')}</span>`:'';
+    const ver=c.verified?`<span class="card-verified">${T('verified')}</span>`:'';
+    const act=c.type==='offer'?T('action_write'):T('action_respond');
+    const wa=c.whatsapp?c.whatsapp.replace(/\D/g,''):'';
+    return `<div class="card" onclick="showToast(T('card_open'))">
+      <div class="card-top"><div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span class="card-badge ${typeMap[c.type]}">${T('badge_'+c.type)}</span>${urgent}</div>${ver}</div>
+      <h3>${c.title}</h3>
+      <div class="card-meta"><span>⚖️ ${c.area}</span><span>📍 ${c.city}</span></div>
+      <div class="card-desc">${c.desc}</div>
+      <div class="card-tags">${(c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      <div class="card-footer"><span class="card-price">${c.price||''}</span>
+        <button class="card-action" onclick="event.stopPropagation();${wa?`window.open('https://wa.me/${wa}','_blank')`:`showToast(T('contact_open'))`}">${act}</button>
+      </div></div>`;
+  }).join('');
+}
+
+function renderHow(key){
+  howKey=key;
+  const steps=HOW[lang][key]||HOW.ru[key];
+  document.getElementById('how-steps').innerHTML=steps.map((s,i)=>`
+    <div class="step"><div class="step-num">${i+1}</div><h4>${s.h}</h4><p>${s.p}</p></div>`).join('');
+}
+
+// ── CONTROLS ──
+function showTab(tab,el){
+  currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(el)el.classList.add('active');
+  else document.getElementById('tab-'+tab).classList.add('active');
+  renderCards(tab,document.getElementById('search-input').value);
+}
+function switchHow(key,el){
+  howKey=key;
+  document.querySelectorAll('.how-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderHow(key);
+}
+function openModal(id){document.getElementById('modal-'+id).classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(id){document.getElementById('modal-'+id).classList.remove('open');document.body.style.overflow='';}
+document.querySelectorAll('.modal-overlay').forEach(m=>{
+  m.addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');document.body.style.overflow='';}});
+});
+function switchModalTab(el){document.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+function submitPost(){if(window._firebaseSubmitPost){window._firebaseSubmitPost();}else{closeModal('post');showToast(T('post_success'));}}
+let tt;
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),3000);}
+function toggleMenu(){document.getElementById('mobile-menu').classList.toggle('open');}
+function closeMenu(){document.getElementById('mobile-menu').classList.remove('open');}
+
+// ── INIT ──
+setLang('ru');
+renderCards('offers');
+renderHow('client');
+
+// Auth UI update
+window._updateAuthUI = function(user, userData) {
+  const isLoggedIn = !!user;
+  const loginBtns = document.querySelectorAll('[data-login-btn]');
+  loginBtns.forEach(b => {
+    b.textContent = isLoggedIn ? (userData?.name || '👤') : T('n_login');
+    b.onclick = isLoggedIn
+      ? () => { if(confirm('Выйти из аккаунта?')) window._firebaseSignOut && window._firebaseSignOut(); }
+      : () => window.location.href = 'login.html';
+  });
+  // Mark post buttons
+  document.querySelectorAll('[data-post-btn]').forEach(b => {
+    b.onclick = () => isLoggedIn ? openModal('post') : window.location.href = 'login.html';
+  });
+};
+
+window._goToLogin = function() { window.location.href = 'login.html'; };
+</script>
+
+<!-- ── FIREBASE MODULE ── -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore, collection, getDocs, addDoc, doc, getDoc,
+  query, orderBy, where, limit, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC0SqhKoZAbKZyofcdrP5LR4QMTu0DGVXE",
+  authDomain: "yurpom-kg.firebaseapp.com",
+  projectId: "yurpom-kg",
+  storageBucket: "yurpom-kg.firebasestorage.app",
+  messagingSenderId: "612400502966",
+  appId: "1:612400502966:web:22dae94eeb08b4265aae17"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ── PLAN LIMITS ──
+const PLAN_LIMITS = { free: 1, profi: 10, company: 999 };
+
+// ── LOAD LISTINGS FROM FIRESTORE ──
+async function loadListings() {
+  try {
+    const snap = await getDocs(
+      query(collection(db, 'listings'),
+        where('status', '==', 'active'),
+        orderBy('createdAt', 'desc'),
+        limit(100))
+    );
+    const listings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    // Group by type
+    window._liveListings = {
+      offers:    listings.filter(l => l.type === 'offer'),
+      requests:  listings.filter(l => l.type === 'request'),
+      vacancies: listings.filter(l => l.type === 'vacancy'),
+    };
+
+    // Re-render current tab
+    renderCards(currentTab, document.getElementById('search-input')?.value || '');
+
+    // Update stats
+    const total = listings.length;
+    const el = document.getElementById('st1');
+    if(el) el.textContent = total + '+';
+  } catch(e) {
+    console.warn('Firestore listings:', e.message);
+    // fallback to static data — already rendered
+  }
+}
+
+// ── AUTH STATE ──
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.exists() ? userDoc.data() : null;
+      window._currentUser = user;
+      window._currentUserData = userData;
+      window._updateAuthUI && window._updateAuthUI(user, userData);
+      updateNavForUser(user, userData);
+    } catch(e) {
+      console.warn('User fetch:', e);
+    }
+  } else {
+    window._currentUser = null;
+    window._currentUserData = null;
+    window._updateAuthUI && window._updateAuthUI(null, null);
+    updateNavForUser(null, null);
+  }
+});
+
+function updateNavForUser(user, data) {
+  // Login buttons → show name or "Войти"
+  ['n-login','mn-login'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (user && data) {
+      el.textContent = data.name ? data.name.split(' ')[0] : '👤';
+      el.onclick = () => {
+        if(confirm('Выйти из аккаунта?')) signOut(auth);
+      };
+      el.className = 'nav-btn ghost';
+    } else {
+      el.textContent = id === 'n-login' ? document.getElementById('n-login').textContent : '👤 Войти';
+      el.onclick = () => window.location.href = 'login.html';
+    }
+  });
+
+  // FAB login button
+  const fabLogin = document.getElementById('fab-login');
+  if(fabLogin) {
+    if(user && data) {
+      fabLogin.textContent = '👤 ' + (data.name ? data.name.split(' ')[0] : 'Профиль');
+      fabLogin.onclick = () => { if(confirm('Выйти?')) signOut(auth); };
+    } else {
+      fabLogin.onclick = () => window.location.href = 'login.html';
+    }
+  }
+
+  // Post buttons — require auth
+  ['n-post','mn-post','fab-post','btn-post-s','h-cta1'].forEach(id => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.onclick = (e) => {
+      e.stopPropagation();
+      if(!user) { window.location.href = 'login.html'; return; }
+      openModal('post');
+    };
+  });
+}
+
+// ── SUBMIT LISTING ──
+window._firebaseSubmitPost = async function() {
+  const user = window._currentUser;
+  const userData = window._currentUserData;
+  if (!user || !userData) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Check plan limit
+  try {
+    const snap = await getDocs(
+      query(collection(db, 'listings'),
+        where('uid', '==', user.uid),
+        where('status', '==', 'active'))
+    );
+    const currentCount = snap.size;
+    const limit_count = PLAN_LIMITS[userData.plan || 'free'];
+    if (currentCount >= limit_count) {
+      closeModal('post');
+      showToast(`⚠️ Лимит: ${limit_count} объявл. на тарифе ${userData.plan || 'Free'}. Повысьте тариф.`);
+      return;
+    }
+  } catch(e) { console.warn('Limit check:', e); }
+
+  // Read form fields
+  const activeTab = document.querySelector('.modal-tab.active');
+  const type = activeTab?.dataset?.type || 'offer';
+  const title = document.getElementById('fi-title')?.value?.trim() || '';
+  const area  = document.getElementById('filter-area-modal')?.value  ||
+                document.querySelector('#modal-post select')?.value  || '';
+  const city  = document.getElementById('city-modal')?.value || '';
+  const desc  = document.getElementById('fi-desc')?.value?.trim() || '';
+  const price = document.getElementById('fi-price')?.value?.trim() || '';
+  const contact = document.getElementById('fi-contact')?.value?.trim() || '';
+
+  if (!title) { showToast('⚠️ Введите заголовок объявления'); return; }
+
+  try {
+    await addDoc(collection(db, 'listings'), {
+      uid: user.uid,
+      authorName: userData.name || '',
+      authorPhone: userData.phone || '',
+      verified: userData.verified || false,
+      type, title, area, city, desc, price,
+      whatsapp: contact || userData.phone || '',
+      tags: [],
+      urgent: false,
+      status: 'active',
+      createdAt: serverTimestamp()
+    });
+
+    closeModal('post');
+    showToast(T('post_success'));
+    // Reload listings
+    await loadListings();
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️ Ошибка публикации: ' + e.message);
+  }
+};
+
+// Sign out handler
+window._firebaseSignOut = () => signOut(auth);
+
+// ── BOOT ──
+loadListings();
+</script>
+</body>
+</html>
