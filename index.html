@@ -798,7 +798,7 @@ function renderCards(tab,query=''){
     const ver=c.verified?`<span class="card-verified">${T('verified')}</span>`:'';
     const act=c.type==='offer'?T('action_write'):T('action_respond');
     const wa=c.whatsapp?c.whatsapp.replace(/\D/g,''):'';
-    return `<div class="card" onclick="showToast(T('card_open'))">
+    return `<div class="card" onclick="openCardModal(${JSON.stringify(c)})">
       <div class="card-top"><div style="display:flex;gap:6px;flex-wrap:wrap">
         <span class="card-badge ${typeMap[c.type]}">${T('badge_'+c.type)}</span>${urgent}</div>${ver}</div>
       <h3>${c.title}</h3>
@@ -1053,6 +1053,76 @@ window._firebaseSignOut = () => signOut(auth);
 
 // ── BOOT ──
 loadListings();
+
+// ── CARD MODAL ──
+let _currentCard = null;
+function openCardModal(c) {
+  _currentCard = c;
+  const typeMap = {offer:'badge-offer',request:'badge-request',vacancy:'badge-vacancy'};
+  const typeLabel = {offer:'💼 Услуга',request:'🙋 Заявка',vacancy:'📌 Вакансия'};
+  document.getElementById('card-modal-badge').className = 'card-badge ' + (typeMap[c.type]||'');
+  document.getElementById('card-modal-badge').textContent = typeLabel[c.type]||c.type;
+  document.getElementById('card-modal-urgent').style.display = c.urgent ? 'inline-flex' : 'none';
+  document.getElementById('card-modal-verified').style.display = c.verified ? 'inline-flex' : 'none';
+  document.getElementById('card-modal-title').textContent = c.title || '';
+  document.getElementById('card-modal-area').textContent = '⚖️ ' + (c.area || '');
+  document.getElementById('card-modal-city').textContent = '📍 ' + (c.city || '');
+  document.getElementById('card-modal-desc').textContent = c.desc || '';
+  document.getElementById('card-modal-price').textContent = c.price || '';
+  document.getElementById('card-modal-tags').innerHTML = (c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+  // Author
+  const author = c.authorName ? `👤 ${c.authorName}` : '';
+  const phone = c.authorPhone ? ` · ${c.authorPhone}` : '';
+  document.getElementById('card-modal-author').textContent = author + phone;
+  // WhatsApp
+  const wa = c.whatsapp || c.authorPhone || '';
+  const waBtn = document.getElementById('card-modal-wa');
+  waBtn.style.display = wa ? 'block' : 'none';
+  openModal('card');
+}
+function openCardContact() {
+  if (!_currentCard) return;
+  const wa = _currentCard.whatsapp || _currentCard.authorPhone || '';
+  if (wa) {
+    const num = wa.replace(/\D/g,'');
+    const msg = encodeURIComponent('Здравствуйте! Вас интересует объявление на Yurpom.kg: ' + (_currentCard.title||''));
+    window.open('https://wa.me/' + num + '?text=' + msg, '_blank');
+  }
+}
+
 </script>
+
+<!-- ── CARD DETAIL MODAL ── -->
+<div class="modal-overlay" id="modal-card" onclick="if(event.target===this)closeModal('card')">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <span id="card-modal-badge" class="card-badge"></span>
+        <span id="card-modal-urgent" class="card-badge badge-urgent" style="display:none">🔥 Срочно</span>
+        <span id="card-modal-verified" class="card-verified" style="display:none">✓ Верифицирован</span>
+      </div>
+      <button class="modal-close" onclick="closeModal('card')">✕</button>
+    </div>
+    <h2 id="card-modal-title" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin:12px 0 8px;line-height:1.3;"></h2>
+    <div class="card-meta" style="margin-bottom:12px;">
+      <span id="card-modal-area"></span>
+      <span id="card-modal-city"></span>
+    </div>
+    <div id="card-modal-desc" style="font-size:14px;line-height:1.7;color:var(--text-muted);margin-bottom:16px;"></div>
+    <div id="card-modal-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--border);">
+      <span id="card-modal-price" style="font-size:20px;font-weight:700;color:var(--gold);font-family:'Playfair Display',serif;"></span>
+      <div style="display:flex;gap:8px;">
+        <button id="card-modal-wa" class="form-submit" style="padding:10px 20px;font-size:14px;" onclick="openCardContact()">
+          📱 WhatsApp
+        </button>
+        <button id="card-modal-tg" class="nav-btn ghost" style="padding:10px 16px;font-size:14px;display:none;" onclick="openCardTelegram()">
+          ✈️ Telegram
+        </button>
+      </div>
+    </div>
+    <div id="card-modal-author" style="margin-top:12px;font-size:12px;color:var(--text-muted);font-family:'IBM Plex Mono';"></div>
+  </div>
+</div>
 </body>
 </html>
