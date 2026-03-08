@@ -207,7 +207,7 @@
 </head>
 <body>
 
-<a class="back-link" href="yurpom.html">← <span id="back-text">На главную</span></a>
+<a class="back-link" href="index.html">← <span id="back-text">На главную</span></a>
 
 <div class="lang-bar">
   <button onclick="setLang('ru')" id="lbtn-ru" class="active">РУС</button>
@@ -374,7 +374,7 @@
       <span class="success-icon">🎉</span>
       <div class="success-title" id="success-title">Добро пожаловать!</div>
       <div class="success-sub" id="success-sub">Ваш профиль создан. Перенаправляем на главную страницу...</div>
-      <button class="submit-btn" onclick="window.location.href='yurpom.html'" id="btn-to-main">
+      <button class="submit-btn" onclick="window.location.href='index.html'" id="btn-to-main">
         На главную →
       </button>
     </div>
@@ -422,7 +422,7 @@ onAuthStateChanged(auth, async (user) => {
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     if (userDoc.exists()) {
       // Already registered — go to main
-      window.location.href = 'yurpom.html';
+      window.location.href = 'index.html';
     }
   }
 });
@@ -583,7 +583,7 @@ function showSuccess(existing) {
     document.getElementById('success-title').textContent = T('welcome_new');
     document.getElementById('success-sub').textContent = T('profile_created');
   }
-  setTimeout(() => { window.location.href = 'yurpom.html'; }, 2500);
+  setTimeout(() => { window.location.href = 'index.html'; }, 2500);
 }
 
 function startTimer() {
