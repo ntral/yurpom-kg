@@ -319,9 +319,9 @@
 <body>
 
 <!-- NEON PARTICLE CANVAS -->
-<canvas id="neon-bg" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.4;"></canvas>
+<canvas id="neon-bg" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.35;"></canvas>
 
-<div style="position:relative;z-index:1;">
+<div style="position:relative;z-index:2;">
 <nav>
   <div class="logo">⚖️ Yurpom<span id="logo-sub">.kg</span></div>
   <div class="nav-links">
@@ -1253,15 +1253,15 @@ function openCardContact() {
 </script>
 
 <!-- ── CARD DETAIL MODAL ── -->
-<div class="modal-overlay" id="modal-card" onclick="if(event.target===this)closeModal('card')">
+<div class="modal-overlay" id="modal-card" style="z-index:500;" onclick="if(event.target===this)closeModal('card')">
   <div class="modal-sheet">
-    <div class="modal-header">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <span id="card-modal-badge" class="card-badge"></span>
         <span id="card-modal-urgent" class="card-badge badge-urgent" style="display:none">🔥 Срочно</span>
         <span id="card-modal-verified" class="card-verified" style="display:none">✓ Верифицирован</span>
       </div>
-      <button class="modal-close" onclick="closeModal('card')">✕</button>
+      <button onclick="closeModal('card')" style="background:none;border:none;color:#7090b0;font-size:22px;cursor:pointer;padding:0 0 0 12px;line-height:1;flex-shrink:0;">✕</button>
     </div>
     <h2 id="card-modal-title" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin:12px 0 8px;line-height:1.3;"></h2>
     <div class="card-meta" style="margin-bottom:12px;">
