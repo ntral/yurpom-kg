@@ -1211,44 +1211,6 @@ window._firebaseSignOut = () => signOut(auth);
 // ── BOOT ──
 loadListings();
 
-// ── CARD MODAL ──
-let _currentCard = null;
-function openCardModal(idx) {
-  const c = (window._cardData && window._cardData[idx]) || {};
-  _currentCard = c;
-  const typeMap = {offer:'badge-offer',request:'badge-request',vacancy:'badge-vacancy'};
-  const typeLabel = {offer:'💼 Услуга',request:'🙋 Заявка',vacancy:'📌 Вакансия'};
-  document.getElementById('card-modal-badge').className = 'card-badge ' + (typeMap[c.type]||'');
-  document.getElementById('card-modal-badge').textContent = typeLabel[c.type]||c.type;
-  document.getElementById('card-modal-urgent').style.display = c.urgent ? 'inline-flex' : 'none';
-  document.getElementById('card-modal-verified').style.display = c.verified ? 'inline-flex' : 'none';
-  document.getElementById('card-modal-title').textContent = c.title || '';
-  document.getElementById('card-modal-area').textContent = '⚖️ ' + (c.area || '');
-  document.getElementById('card-modal-city').textContent = '📍 ' + (c.city || '');
-  document.getElementById('card-modal-desc').textContent = c.desc || '';
-  document.getElementById('card-modal-price').textContent = c.price || '';
-  document.getElementById('card-modal-tags').innerHTML = (c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
-  // Author
-  const author = c.authorName ? `👤 ${c.authorName}` : '';
-  const phone = c.authorPhone ? ` · ${c.authorPhone}` : '';
-  document.getElementById('card-modal-author').textContent = author + phone;
-  // WhatsApp
-  const wa = c.whatsapp || c.authorPhone || '';
-  const waBtn = document.getElementById('card-modal-wa');
-  waBtn.style.display = wa ? 'block' : 'none';
-  // manually open since modal-card added after querySelectorAll
-  const m = document.getElementById('modal-card');
-  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
-}
-function openCardContact() {
-  if (!_currentCard) return;
-  const wa = _currentCard.whatsapp || _currentCard.authorPhone || '';
-  if (wa) {
-    const num = wa.replace(/\D/g,'');
-    const msg = encodeURIComponent('Здравствуйте! Вас интересует объявление на Yurpom.kg: ' + (_currentCard.title||''));
-    window.open('https://wa.me/' + num + '?text=' + msg, '_blank');
-  }
-}
 
 </script>
 
@@ -1376,27 +1338,6 @@ function openCardContact() {
   draw();
 })();
 
-// ── LAWYER MODAL ──
-const _lawyers = [{"name": "Аскарова Динара", "spec": "Семейное · Гражданское", "info": "Адвокат, стаж 12 лет · Бишкек", "stars": 5, "reviews": 42, "phone": "996700000001", "avatar": "А"}, {"name": "Мамытов Эрлан", "spec": "Уголовное · Административное", "info": "Адвокат, стаж 8 лет · Бишкек", "stars": 4, "reviews": 28, "phone": "996700000002", "avatar": "М"}, {"name": "Кенжебаева Айгуль", "spec": "Корпоративное · Налоговое", "info": "Юрист, стаж 15 лет · Бишкек, Ош", "stars": 5, "reviews": 61, "phone": "996700000003", "avatar": "К"}, {"name": "Токтобеков Азамат", "spec": "Земельное · Гражданское", "info": "Юрисконсульт, стаж 6 лет · Ош", "stars": 4, "reviews": 19, "phone": "996700000004", "avatar": "Т"}];
-let _currentLawyer = null;
-function openLawyerModal(idx) {
-  const l = _lawyers[idx];
-  if(!l) return;
-  _currentLawyer = l;
-  document.getElementById('lm-avatar').textContent = l.avatar;
-  document.getElementById('lm-name').textContent = l.name;
-  document.getElementById('lm-spec').textContent = l.spec;
-  document.getElementById('lm-stars').textContent = '★'.repeat(l.stars) + '☆'.repeat(5-l.stars) + ' (' + l.reviews + ' отзывов)';
-  document.getElementById('lm-info').textContent = l.info;
-  const m = document.getElementById('modal-lawyer');
-  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
-}
-function openLawyerContact() {
-  if(!_currentLawyer) return;
-  const msg = encodeURIComponent('Здравствуйте, ' + _currentLawyer.name + '! Нашёл вас на Yurpom.kg');
-  window.open('https://wa.me/' + _currentLawyer.phone + '?text=' + msg, '_blank');
-}
-
 </script>
 
 
@@ -1417,6 +1358,69 @@ function openLawyerContact() {
     <p style="font-size:11px;color:#2a4060;margin-top:10px;font-family:'IBM Plex Mono';">Демо-профиль · Реальные юристы появятся после регистрации</p>
   </div>
 </div>
+
+
+<script>
+// ── CARD MODAL ──
+let _currentCard = null;
+function openCardModal(idx) {
+  const c = (window._cardData && window._cardData[idx]) || {};
+  _currentCard = c;
+  const typeMap = {offer:'badge-offer',request:'badge-request',vacancy:'badge-vacancy'};
+  const typeLabel = {offer:'💼 Услуга',request:'🙋 Заявка',vacancy:'📌 Вакансия'};
+  document.getElementById('card-modal-badge').className = 'card-badge ' + (typeMap[c.type]||'');
+  document.getElementById('card-modal-badge').textContent = typeLabel[c.type]||c.type;
+  document.getElementById('card-modal-urgent').style.display = c.urgent ? 'inline-flex' : 'none';
+  document.getElementById('card-modal-verified').style.display = c.verified ? 'inline-flex' : 'none';
+  document.getElementById('card-modal-title').textContent = c.title || '';
+  document.getElementById('card-modal-area').textContent = '⚖️ ' + (c.area || '');
+  document.getElementById('card-modal-city').textContent = '📍 ' + (c.city || '');
+  document.getElementById('card-modal-desc').textContent = c.desc || '';
+  document.getElementById('card-modal-price').textContent = c.price || '';
+  document.getElementById('card-modal-tags').innerHTML = (c.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+  // Author
+  const author = c.authorName ? `👤 ${c.authorName}` : '';
+  const phone = c.authorPhone ? ` · ${c.authorPhone}` : '';
+  document.getElementById('card-modal-author').textContent = author + phone;
+  // WhatsApp
+  const wa = c.whatsapp || c.authorPhone || '';
+  const waBtn = document.getElementById('card-modal-wa');
+  waBtn.style.display = wa ? 'block' : 'none';
+  // manually open since modal-card added after querySelectorAll
+  const m = document.getElementById('modal-card');
+  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
+}
+function openCardContact() {
+  if (!_currentCard) return;
+  const wa = _currentCard.whatsapp || _currentCard.authorPhone || '';
+  if (wa) {
+    const num = wa.replace(/\D/g,'');
+    const msg = encodeURIComponent('Здравствуйте! Вас интересует объявление на Yurpom.kg: ' + (_currentCard.title||''));
+    window.open('https://wa.me/' + num + '?text=' + msg, '_blank');
+  }
+}
+
+// ── LAWYER MODAL ──
+const _lawyers = [{"name": "Аскарова Динара", "spec": "Семейное · Гражданское", "info": "Адвокат, стаж 12 лет · Бишкек", "stars": 5, "reviews": 42, "phone": "996700000001", "avatar": "А"}, {"name": "Мамытов Эрлан", "spec": "Уголовное · Административное", "info": "Адвокат, стаж 8 лет · Бишкек", "stars": 4, "reviews": 28, "phone": "996700000002", "avatar": "М"}, {"name": "Кенжебаева Айгуль", "spec": "Корпоративное · Налоговое", "info": "Юрист, стаж 15 лет · Бишкек, Ош", "stars": 5, "reviews": 61, "phone": "996700000003", "avatar": "К"}, {"name": "Токтобеков Азамат", "spec": "Земельное · Гражданское", "info": "Юрисконсульт, стаж 6 лет · Ош", "stars": 4, "reviews": 19, "phone": "996700000004", "avatar": "Т"}];
+let _currentLawyer = null;
+function openLawyerModal(idx) {
+  const l = _lawyers[idx];
+  if(!l) return;
+  _currentLawyer = l;
+  document.getElementById('lm-avatar').textContent = l.avatar;
+  document.getElementById('lm-name').textContent = l.name;
+  document.getElementById('lm-spec').textContent = l.spec;
+  document.getElementById('lm-stars').textContent = '★'.repeat(l.stars) + '☆'.repeat(5-l.stars) + ' (' + l.reviews + ' отзывов)';
+  document.getElementById('lm-info').textContent = l.info;
+  const m = document.getElementById('modal-lawyer');
+  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
+}
+function openLawyerContact() {
+  if(!_currentLawyer) return;
+  const msg = encodeURIComponent('Здравствуйте, ' + _currentLawyer.name + '! Нашёл вас на Yurpom.kg');
+  window.open('https://wa.me/' + _currentLawyer.phone + '?text=' + msg, '_blank');
+}
+</script>
 
 </body>
 </html>
