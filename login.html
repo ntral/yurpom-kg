@@ -207,7 +207,7 @@
 </head>
 <body>
 
-<a class="back-link" href="index.html">← <span id="back-text">На главную</span></a>
+<a class="back-link" href="yurpom.html">← <span id="back-text">На главную</span></a>
 
 <div class="lang-bar">
   <button onclick="setLang('ru')" id="lbtn-ru" class="active">РУС</button>
@@ -340,6 +340,28 @@
       </button>
     </div>
 
+    <!-- Document upload for lawyers -->
+    <div id="doc-upload-section" style="display:none;margin-top:16px;">
+      <div class="divider" id="divider-doc">Подтверждающий документ</div>
+      <div id="doc-hint" style="font-size:12px;color:var(--text-muted);margin-bottom:10px;text-align:center;">
+        Адвокаты — скрин лицензии АП КР<br>Юристы — скрин диплома
+      </div>
+      <label id="doc-upload-label" style="display:block;border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.2s;" 
+        onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+        <input type="file" id="doc-file" accept="image/*,.pdf" style="display:none" onchange="handleDocUpload(this)">
+        <div id="doc-placeholder">
+          <div style="font-size:28px;margin-bottom:6px;">📄</div>
+          <div style="font-size:13px;color:var(--text-muted)" id="doc-label-text">Нажмите чтобы загрузить</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">JPG, PNG или PDF · макс. 5 МБ</div>
+        </div>
+        <div id="doc-preview" style="display:none;">
+          <div style="font-size:24px;">✅</div>
+          <div id="doc-filename" style="font-size:13px;color:var(--gold);margin-top:4px;"></div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;" id="doc-change-text">Нажмите чтобы изменить</div>
+        </div>
+      </label>
+    </div>
+
     <button class="submit-btn" onclick="saveName()" id="btn-save-name" style="margin-top:20px;">
       <span class="spinner" id="spinner-name"></span>
       <span id="btn-save-text">Начать работу</span> →
@@ -352,7 +374,7 @@
       <span class="success-icon">🎉</span>
       <div class="success-title" id="success-title">Добро пожаловать!</div>
       <div class="success-sub" id="success-sub">Ваш профиль создан. Перенаправляем на главную страницу...</div>
-      <button class="submit-btn" onclick="window.location.href='index.html'" id="btn-to-main">
+      <button class="submit-btn" onclick="window.location.href='yurpom.html'" id="btn-to-main">
         На главную →
       </button>
     </div>
@@ -400,7 +422,7 @@ onAuthStateChanged(auth, async (user) => {
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     if (userDoc.exists()) {
       // Already registered — go to main
-      window.location.href = 'index.html';
+      window.location.href = 'yurpom.html';
     }
   }
 });
@@ -501,6 +523,20 @@ window.saveName = async function() {
 
   try {
     const user = auth.currentUser;
+    // Read doc file if uploaded
+    let docData = null, docName = null;
+    const fileInput = document.getElementById('doc-file');
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      docName = file.name;
+      docData = await new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.onerror = rej;
+        r.readAsDataURL(file);
+      });
+    }
+
     await setDoc(doc(db, 'users', user.uid), {
       uid: user.uid,
       phone: window._state.phoneNumber,
@@ -510,6 +546,9 @@ window.saveName = async function() {
       plan: 'free',
       planExpiry: null,
       verified: false,
+      docPending: !!docData,
+      docFile: docData || null,
+      docFileName: docName || null,
       active: true,
       createdAt: serverTimestamp()
     });
@@ -544,7 +583,7 @@ function showSuccess(existing) {
     document.getElementById('success-title').textContent = T('welcome_new');
     document.getElementById('success-sub').textContent = T('profile_created');
   }
-  setTimeout(() => { window.location.href = 'index.html'; }, 2500);
+  setTimeout(() => { window.location.href = 'yurpom.html'; }, 2500);
 }
 
 function startTimer() {
@@ -741,6 +780,9 @@ window.selectSpec = function(spec, btn) {
   document.querySelectorAll('#spec-grid .role-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   if(window._setSpec) window._setSpec(spec);
+  // Show doc upload for lawyers/advocates
+  const docSection = document.getElementById('doc-upload-section');
+  if(docSection) docSection.style.display = 'block';
 };
 
 // ── PHONE FORMAT ──
@@ -757,6 +799,20 @@ window.formatPhone = function(input) {
 // ── INIT ──
 applyTranslations();
 showStep('role');
+
+window.handleDocUpload = function(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Файл слишком большой. Максимум 5 МБ.');
+    input.value = '';
+    return;
+  }
+  document.getElementById('doc-placeholder').style.display = 'none';
+  document.getElementById('doc-preview').style.display = 'block';
+  document.getElementById('doc-filename').textContent = file.name;
+};
+
 </script>
 </body>
 </html>
