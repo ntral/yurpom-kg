@@ -1238,8 +1238,8 @@ loadListings();
         <button id="card-modal-wa" class="form-submit" style="padding:10px 20px;font-size:14px;" onclick="openCardContact()">
           📱 WhatsApp
         </button>
-        <button id="card-modal-tg" class="nav-btn ghost" style="padding:10px 16px;font-size:14px;display:none;" onclick="openCardTelegram()">
-          ✈️ Telegram
+        <button onclick="openReviews(_currentCardId)" style="padding:10px 14px;background:transparent;border:1px solid var(--neon-blue);color:var(--neon-blue);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;">
+          ⭐ Отзывы
         </button>
       </div>
     </div>
@@ -1387,6 +1387,7 @@ function openCardModal(idx) {
   const waBtn = document.getElementById('card-modal-wa');
   waBtn.style.display = wa ? 'block' : 'none';
   // manually open since modal-card added after querySelectorAll
+  window._currentCardId = c.id || null;
   const m = document.getElementById('modal-card');
   if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
 }
@@ -1420,6 +1421,126 @@ function openLawyerContact() {
   const msg = encodeURIComponent('Здравствуйте, ' + _currentLawyer.name + '! Нашёл вас на Yurpom.kg');
   window.open('https://wa.me/' + _currentLawyer.phone + '?text=' + msg, '_blank');
 }
+</script>
+
+
+<!-- ── REVIEWS MODAL ── -->
+<div class="modal-overlay" id="modal-reviews" style="z-index:500;" onclick="if(event.target===this)closeModal('reviews')">
+  <div class="modal-sheet" style="max-width:500px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);">⭐ Отзывы</h3>
+      <button onclick="closeModal('reviews')" style="background:none;border:none;color:#7090b0;font-size:22px;cursor:pointer;">✕</button>
+    </div>
+    <div id="reviews-list" style="max-height:300px;overflow-y:auto;margin-bottom:16px;"></div>
+    <div id="review-form" style="border-top:1px solid var(--border);padding-top:16px;">
+      <div id="review-login-msg" style="display:none;text-align:center;padding:12px;font-size:13px;color:var(--text-muted);">
+        <a href="login.html" style="color:var(--neon-blue);">Войдите</a> чтобы оставить отзыв
+      </div>
+      <div id="review-input-wrap">
+        <div style="font-size:13px;font-weight:600;color:var(--neon-blue);margin-bottom:8px;font-family:'IBM Plex Mono';">ОСТАВИТЬ ОТЗЫВ</div>
+        <div id="star-input" style="display:flex;gap:6px;margin-bottom:10px;font-size:24px;cursor:pointer;">
+          <span onclick="setReviewStar(1)" data-star="1">☆</span>
+          <span onclick="setReviewStar(2)" data-star="2">☆</span>
+          <span onclick="setReviewStar(3)" data-star="3">☆</span>
+          <span onclick="setReviewStar(4)" data-star="4">☆</span>
+          <span onclick="setReviewStar(5)" data-star="5">☆</span>
+        </div>
+        <textarea id="review-text" placeholder="Напишите отзыв..." style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:13px;resize:vertical;min-height:80px;outline:none;transition:border 0.2s;" onfocus="this.style.borderColor='var(--neon-blue)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+        <button onclick="submitReview()" style="width:100%;margin-top:10px;padding:10px;background:linear-gradient(135deg,var(--gold),#e8a800);color:#050810;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">Опубликовать отзыв</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ── REVIEWS SYSTEM ──
+let _reviewListingId = null;
+let _reviewStar = 0;
+
+window.openReviews = async function(listingId) {
+  _reviewListingId = listingId;
+  _reviewStar = 0;
+  updateStarDisplay(0);
+  document.getElementById('review-text').value = '';
+
+  // Show/hide form based on auth
+  const isLoggedIn = !!window._currentUser;
+  document.getElementById('review-login-msg').style.display = isLoggedIn ? 'none' : 'block';
+  document.getElementById('review-input-wrap').style.display = isLoggedIn ? 'block' : 'none';
+
+  // Load reviews
+  const list = document.getElementById('reviews-list');
+  list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:13px;">Загрузка...</div>';
+
+  const m = document.getElementById('modal-reviews');
+  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
+
+  try {
+    const { getFirestore, collection, query, where, orderBy, getDocs } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+    const db = getFirestore();
+    const snap = await getDocs(query(
+      collection(db, 'reviews'),
+      where('listingId','==', listingId),
+      orderBy('createdAt','desc')
+    ));
+    const reviews = snap.docs.map(d => d.data());
+    if (!reviews.length) {
+      list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:13px;">Отзывов пока нет. Будьте первым!</div>';
+    } else {
+      list.innerHTML = reviews.map(r => `
+        <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-weight:600;font-size:13px;">${r.authorName||'Аноним'}</span>
+            <span style="color:var(--gold);font-size:13px;">${'★'.repeat(r.stars||0)}${'☆'.repeat(5-(r.stars||0))}</span>
+          </div>
+          <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">${r.text||''}</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'IBM Plex Mono';">${r.createdAt?.toDate?.()?.toLocaleDateString('ru-RU')||''}</div>
+        </div>`).join('');
+    }
+  } catch(e) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:13px;">Ошибка загрузки отзывов</div>';
+    console.warn('Reviews:', e);
+  }
+};
+
+window.setReviewStar = function(n) {
+  _reviewStar = n;
+  updateStarDisplay(n);
+};
+
+function updateStarDisplay(n) {
+  document.querySelectorAll('#star-input span').forEach((s,i) => {
+    s.textContent = i < n ? '★' : '☆';
+    s.style.color = i < n ? 'var(--gold)' : 'var(--text-muted)';
+  });
+}
+
+window.submitReview = async function() {
+  if (!window._currentUser) { window.location.href='login.html'; return; }
+  if (!_reviewStar) { showToast('⭐ Выберите оценку'); return; }
+  const text = document.getElementById('review-text').value.trim();
+  if (!text) { showToast('✏️ Напишите отзыв'); return; }
+
+  try {
+    const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+    const db = getFirestore();
+    await addDoc(collection(db, 'reviews'), {
+      listingId: _reviewListingId,
+      authorId: window._currentUser.uid,
+      authorName: window._currentUserData?.name || 'Клиент',
+      stars: _reviewStar,
+      text: text,
+      createdAt: serverTimestamp()
+    });
+    showToast('✅ Отзыв опубликован!');
+    closeModal('reviews');
+  } catch(e) {
+    console.error(e);
+    showToast('⚠️ Ошибка: ' + e.message);
+  }
+};
 </script>
 
 </body>
