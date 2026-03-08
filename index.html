@@ -1208,6 +1208,13 @@ window._firebaseSubmitPost = async function() {
 // Sign out handler
 window._firebaseSignOut = () => signOut(auth);
 
+// ── EXPOSE GLOBALS ──
+window._db = db;
+window._fsLib = {
+  collection, getDocs, addDoc, doc, getDoc,
+  query, orderBy, where, limit, serverTimestamp
+};
+
 // ── BOOT ──
 loadListings();
 
@@ -1464,22 +1471,25 @@ window.openReviews = async function(listingId) {
   updateStarDisplay(0);
   document.getElementById('review-text').value = '';
 
-  // Show/hide form based on auth
   const isLoggedIn = !!window._currentUser;
   document.getElementById('review-login-msg').style.display = isLoggedIn ? 'none' : 'block';
   document.getElementById('review-input-wrap').style.display = isLoggedIn ? 'block' : 'none';
 
-  // Load reviews
   const list = document.getElementById('reviews-list');
   list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:13px;">Загрузка...</div>';
 
   const m = document.getElementById('modal-reviews');
   if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
 
+  if (!listingId) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;font-size:13px;">Отзывов пока нет. Будьте первым!</div>';
+    return;
+  }
+
   try {
-    const { getFirestore, collection, query, where, orderBy, getDocs } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
-    const db = getFirestore();
+    const db = window._db;
+    if (!db) { list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">Загрузка...</div>'; return; }
+    const { collection, query, where, orderBy, getDocs } = window._fsLib;
     const snap = await getDocs(query(
       collection(db, 'reviews'),
       where('listingId','==', listingId),
@@ -1496,7 +1506,6 @@ window.openReviews = async function(listingId) {
             <span style="color:var(--gold);font-size:13px;">${'★'.repeat(r.stars||0)}${'☆'.repeat(5-(r.stars||0))}</span>
           </div>
           <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">${r.text||''}</div>
-          <div style="font-size:11px;color:var(--text-dim);margin-top:4px;font-family:'IBM Plex Mono';">${r.createdAt?.toDate?.()?.toLocaleDateString('ru-RU')||''}</div>
         </div>`).join('');
     }
   } catch(e) {
@@ -1522,10 +1531,11 @@ window.submitReview = async function() {
   if (!_reviewStar) { showToast('⭐ Выберите оценку'); return; }
   const text = document.getElementById('review-text').value.trim();
   if (!text) { showToast('✏️ Напишите отзыв'); return; }
+  if (!_reviewListingId) { showToast('⚠️ Ошибка: объявление не найдено'); return; }
 
   try {
-    const { getFirestore, collection, addDoc, serverTimestamp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-    const db = getFirestore();
+    const db = window._db;
+    const { collection, addDoc, serverTimestamp } = window._fsLib;
     await addDoc(collection(db, 'reviews'), {
       listingId: _reviewListingId,
       authorId: window._currentUser.uid,
@@ -1540,8 +1550,7 @@ window.submitReview = async function() {
     console.error(e);
     showToast('⚠️ Ошибка: ' + e.message);
   }
-};
-</script>
+};</script>
 
 </body>
 </html>
