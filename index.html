@@ -1245,7 +1245,7 @@ loadListings();
         <button id="card-modal-wa" class="form-submit" style="padding:10px 20px;font-size:14px;" onclick="openCardContact()">
           📱 WhatsApp
         </button>
-        <button onclick="openReviews(_currentCardId)" style="padding:10px 14px;background:transparent;border:1px solid var(--neon-blue);color:var(--neon-blue);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;">
+        <button id="card-reviews-btn" onclick="openReviews(window._currentCardId)" style="padding:10px 14px;background:transparent;border:1px solid var(--neon-blue);color:var(--neon-blue);border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;">
           ⭐ Отзывы
         </button>
       </div>
@@ -1466,7 +1466,7 @@ let _reviewListingId = null;
 let _reviewStar = 0;
 
 window.openReviews = async function(listingId) {
-  _reviewListingId = listingId;
+  _reviewListingId = listingId || (window._currentCard && window._currentCard.id) || 'general';
   _reviewStar = 0;
   updateStarDisplay(0);
   document.getElementById('review-text').value = '';
@@ -1531,7 +1531,7 @@ window.submitReview = async function() {
   if (!_reviewStar) { showToast('⭐ Выберите оценку'); return; }
   const text = document.getElementById('review-text').value.trim();
   if (!text) { showToast('✏️ Напишите отзыв'); return; }
-  if (!_reviewListingId) { showToast('⚠️ Ошибка: объявление не найдено'); return; }
+  if (!_reviewListingId) _reviewListingId = 'general';
 
   try {
     const db = window._db;
