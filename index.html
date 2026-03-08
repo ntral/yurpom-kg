@@ -410,7 +410,7 @@
     <a href="#" class="section-link" id="lawyers-all">Все юристы →</a>
   </div>
   <div class="lawyer-grid">
-    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+    <div class="lawyer-card" onclick="openLawyerModal(0)">
       <div class="lawyer-avatar">А</div>
       <div class="lawyer-name">Аскарова Динара</div>
       <div class="lawyer-spec" id="ls1">Семейное • Гражданское</div>
@@ -418,7 +418,7 @@
       <div class="lawyer-info" id="li1">Адвокат, стаж 12 лет · Бишкек</div>
       <button class="lawyer-btn" id="lbw1" onclick="event.stopPropagation();showToast(T('contact_open'))">Написать</button>
     </div>
-    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+    <div class="lawyer-card" onclick="openLawyerModal(1)">
       <div class="lawyer-avatar">М</div>
       <div class="lawyer-name">Мамытов Эрлан</div>
       <div class="lawyer-spec" id="ls2">Уголовное • Административное</div>
@@ -426,7 +426,7 @@
       <div class="lawyer-info" id="li2">Адвокат, стаж 8 лет · Бишкек</div>
       <button class="lawyer-btn" id="lbw2" onclick="event.stopPropagation();showToast(T('contact_open'))">Написать</button>
     </div>
-    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+    <div class="lawyer-card" onclick="openLawyerModal(2)">
       <div class="lawyer-avatar">К</div>
       <div class="lawyer-name">Кенжебаева Айгуль</div>
       <div class="lawyer-spec" id="ls3">Корпоративное • Налоговое</div>
@@ -434,7 +434,7 @@
       <div class="lawyer-info" id="li3">Юрист, стаж 15 лет · Бишкек, Ош</div>
       <button class="lawyer-btn" id="lbw3" onclick="event.stopPropagation();showToast(T('contact_open'))">Написать</button>
     </div>
-    <div class="lawyer-card" onclick="showToast(T('profile_opened'))">
+    <div class="lawyer-card" onclick="openLawyerModal(3)">
       <div class="lawyer-avatar">Т</div>
       <div class="lawyer-name">Токтобеков Азамат</div>
       <div class="lawyer-spec" id="ls4">Земельное • Гражданское</div>
@@ -1375,7 +1375,48 @@ function openCardContact() {
   }
   draw();
 })();
+
+// ── LAWYER MODAL ──
+const _lawyers = [{"name": "Аскарова Динара", "spec": "Семейное · Гражданское", "info": "Адвокат, стаж 12 лет · Бишкек", "stars": 5, "reviews": 42, "phone": "996700000001", "avatar": "А"}, {"name": "Мамытов Эрлан", "spec": "Уголовное · Административное", "info": "Адвокат, стаж 8 лет · Бишкек", "stars": 4, "reviews": 28, "phone": "996700000002", "avatar": "М"}, {"name": "Кенжебаева Айгуль", "spec": "Корпоративное · Налоговое", "info": "Юрист, стаж 15 лет · Бишкек, Ош", "stars": 5, "reviews": 61, "phone": "996700000003", "avatar": "К"}, {"name": "Токтобеков Азамат", "spec": "Земельное · Гражданское", "info": "Юрисконсульт, стаж 6 лет · Ош", "stars": 4, "reviews": 19, "phone": "996700000004", "avatar": "Т"}];
+let _currentLawyer = null;
+function openLawyerModal(idx) {
+  const l = _lawyers[idx];
+  if(!l) return;
+  _currentLawyer = l;
+  document.getElementById('lm-avatar').textContent = l.avatar;
+  document.getElementById('lm-name').textContent = l.name;
+  document.getElementById('lm-spec').textContent = l.spec;
+  document.getElementById('lm-stars').textContent = '★'.repeat(l.stars) + '☆'.repeat(5-l.stars) + ' (' + l.reviews + ' отзывов)';
+  document.getElementById('lm-info').textContent = l.info;
+  const m = document.getElementById('modal-lawyer');
+  if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
+}
+function openLawyerContact() {
+  if(!_currentLawyer) return;
+  const msg = encodeURIComponent('Здравствуйте, ' + _currentLawyer.name + '! Нашёл вас на Yurpom.kg');
+  window.open('https://wa.me/' + _currentLawyer.phone + '?text=' + msg, '_blank');
+}
+
 </script>
+
+
+<!-- ── LAWYER PROFILE MODAL ── -->
+<div class="modal-overlay" id="modal-lawyer" style="z-index:500;" onclick="if(event.target===this)closeModal('lawyer')">
+  <div class="modal-sheet" style="max-width:440px;text-align:center;">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+      <button onclick="closeModal('lawyer')" style="background:none;border:none;color:#7090b0;font-size:22px;cursor:pointer;line-height:1;">✕</button>
+    </div>
+    <div id="lm-avatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#00d4ff,#bf5fff);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;box-shadow:0 0 20px rgba(0,212,255,0.3);"></div>
+    <div id="lm-name" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:4px;"></div>
+    <div id="lm-spec" style="font-size:13px;color:#00d4ff;margin-bottom:8px;text-shadow:0 0 6px rgba(0,212,255,0.5);"></div>
+    <div id="lm-stars" style="font-size:14px;color:#f0c040;margin-bottom:6px;text-shadow:0 0 8px rgba(240,192,64,0.4);"></div>
+    <div id="lm-info" style="font-size:13px;color:#7090b0;margin-bottom:20px;"></div>
+    <button id="lm-wa-btn" onclick="openLawyerContact()" style="width:100%;padding:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 15px rgba(37,211,102,0.3);">
+      📱 Написать в WhatsApp
+    </button>
+    <p style="font-size:11px;color:#2a4060;margin-top:10px;font-family:'IBM Plex Mono';">Демо-профиль · Реальные юристы появятся после регистрации</p>
+  </div>
+</div>
 
 </body>
 </html>
