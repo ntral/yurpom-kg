@@ -893,25 +893,45 @@ window.showAdminTab = function(name, btn) {
 };
 
 let _docUserId = null;
-window.viewUserDoc = function(uid) {
-  const u = allUsers.find(u => u.id === uid);
-  if (!u || !u.docFile) return;
+window.viewUserDoc = async function(uid) {
   _docUserId = uid;
-  document.getElementById('doc-user-info').textContent = (u.name||'') + ' · ' + (u.phone||'') + ' · ' + (u.docFileName||'документ');
-  const img = document.getElementById('doc-img');
-  const pdfMsg = document.getElementById('doc-pdf-msg');
-  img.style.display = 'block';
-  pdfMsg.style.display = 'none';
-  if (u.docFile.startsWith('data:image')) {
-    img.src = u.docFile;
-  } else {
-    img.style.display = 'none';
-    pdfMsg.style.display = 'block';
-    document.getElementById('doc-download-link').href = u.docFile;
-  }
-  // Hide verify btn if already verified
-  document.getElementById('doc-verify-btn').style.display = u.verified ? 'none' : 'block';
   document.getElementById('modal-doc').style.display = 'flex';
+  document.getElementById('doc-user-info').textContent = 'Загрузка...';
+  document.getElementById('doc-img').style.display = 'none';
+  document.getElementById('doc-pdf-msg').style.display = 'none';
+
+  try {
+    // Always fetch fresh from Firestore to get docFile (large field)
+    const userSnap = await getDoc(doc(db, 'users', uid));
+    if (!userSnap.exists()) { 
+      document.getElementById('doc-user-info').textContent = 'Пользователь не найден';
+      return; 
+    }
+    const u = { id: uid, ...userSnap.data() };
+    document.getElementById('doc-user-info').textContent = (u.name||'') + ' · ' + (u.phone||'') + ' · ' + (u.docFileName||'документ');
+    
+    const img = document.getElementById('doc-img');
+    const pdfMsg = document.getElementById('doc-pdf-msg');
+
+    if (!u.docFile) {
+      document.getElementById('doc-user-info').textContent += ' — документ не найден';
+      return;
+    }
+
+    if (u.docFile.startsWith('data:image')) {
+      img.src = u.docFile;
+      img.style.display = 'block';
+      pdfMsg.style.display = 'none';
+    } else {
+      img.style.display = 'none';
+      pdfMsg.style.display = 'block';
+      document.getElementById('doc-download-link').href = u.docFile;
+    }
+    document.getElementById('doc-verify-btn').style.display = u.verified ? 'none' : 'block';
+  } catch(e) {
+    console.error('viewUserDoc:', e);
+    document.getElementById('doc-user-info').textContent = 'Ошибка: ' + e.message;
+  }
 };
 
 window.verifyFromDoc = async function() {
