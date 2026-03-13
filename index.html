@@ -1680,6 +1680,7 @@ window.openProfile = function() {
   if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; }
 };
 
+window._profileDocFile = null;
 window.handleProfileDocUpload = function(input) {
   const file = input.files[0];
   if (!file) return;
@@ -1688,6 +1689,7 @@ window.handleProfileDocUpload = function(input) {
     input.value = '';
     return;
   }
+  window._profileDocFile = file;
   document.getElementById('profile-doc-placeholder').style.display = 'none';
   document.getElementById('profile-doc-preview').style.display = 'block';
   document.getElementById('profile-doc-filename').textContent = file.name;
@@ -1697,15 +1699,14 @@ window.handleProfileDocUpload = function(input) {
 window.saveProfileDoc = async function() {
   const user = window._currentUser;
   if (!user) return;
-  const fileInput = document.getElementById('profile-doc-file');
-  if (!fileInput.files[0]) return;
+  const file = window._profileDocFile;
+  if (!file) { showToast('⚠️ Выберите файл'); return; }
 
   const btn = document.getElementById('profile-doc-save-btn');
   btn.textContent = 'Сохранение...';
   btn.disabled = true;
 
   try {
-    const file = fileInput.files[0];
     const docData = await new Promise((res, rej) => {
       const reader = new FileReader();
       reader.onerror = rej;
