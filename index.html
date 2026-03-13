@@ -1707,10 +1707,38 @@ window.saveProfileDoc = async function() {
   try {
     const file = fileInput.files[0];
     const docData = await new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = () => res(r.result);
-      r.onerror = rej;
-      r.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onerror = rej;
+      reader.onload = (e) => {
+        // If PDF - save as-is but truncated won't work, just warn
+        if (file.type === 'application/pdf') {
+          if (file.size > 900 * 1024) {
+            rej(new Error('PDF слишком большой. Используйте JPG/PNG или уменьшите PDF.'));
+            return;
+          }
+          res(e.target.result);
+          return;
+        }
+        // Compress image via canvas
+        const img = new Image();
+        img.onerror = rej;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let w = img.width, h = img.height;
+          // Max 1200px
+          if (w > 1200) { h = Math.round(h * 1200 / w); w = 1200; }
+          if (h > 1200) { w = Math.round(w * 1200 / h); h = 1200; }
+          canvas.width = w; canvas.height = h;
+          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          // Try quality 0.7 first
+          let result = canvas.toDataURL('image/jpeg', 0.7);
+          // If still too big, reduce more
+          if (result.length > 700000) result = canvas.toDataURL('image/jpeg', 0.4);
+          res(result);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
     });
 
     const { updateDoc, doc } = window._fsLib;
