@@ -1062,6 +1062,17 @@ async function loadListings() {
     );
     const listings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
+    // Enrich with author verification status from users cache
+    const userIds = [...new Set(listings.map(l => l.uid).filter(Boolean))];
+    const userVerified = {};
+    await Promise.all(userIds.map(async uid => {
+      try {
+        const uSnap = await getDoc(doc(db, 'users', uid));
+        if (uSnap.exists()) userVerified[uid] = uSnap.data().verified || false;
+      } catch(e) {}
+    }));
+    listings.forEach(l => { if (l.uid) l.verified = userVerified[l.uid] || false; });
+
     // Group by type
     window._liveListings = {
       offers:    listings.filter(l => l.type === 'offer'),
