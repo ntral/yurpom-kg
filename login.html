@@ -483,6 +483,7 @@ window.verifyOTP = async function() {
   try {
     const cred = await confirmationResult.confirm(code);
     const user = cred.user;
+    window._state.currentUser = user;
 
     // Check if user already exists in Firestore
     const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -522,7 +523,8 @@ window.saveName = async function() {
   hideError('name-error');
 
   try {
-    const user = auth.currentUser;
+    const user = auth.currentUser || window._state?.currentUser;
+    if (!user) { showError('name-error', 'Сессия истекла. Пожалуйста, войдите снова.'); setLoading('name', false); return; }
     // Read doc file if uploaded
     let docData = null, docName = null;
     const fileInput = document.getElementById('doc-file');
