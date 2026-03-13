@@ -489,6 +489,11 @@ function showError(msg) {
   document.getElementById('login-error').style.display = 'block';
 }
 
+// ── EXPOSE GLOBALS ──
+window._db = db;
+window._getDoc = getDoc;
+window._doc = doc;
+
 // ── LOAD ALL DATA ──
 async function loadAll() {
   await Promise.all([loadUsers(), loadListings(), loadPayments()]);
@@ -902,7 +907,7 @@ window.viewUserDoc = async function(uid) {
 
   try {
     // Always fetch fresh from Firestore to get docFile (large field)
-    const userSnap = await getDoc(doc(db, 'users', uid));
+    const userSnap = await (window._getDoc || getDoc)((window._doc || doc)(window._db || db, 'users', uid));
     if (!userSnap.exists()) { 
       document.getElementById('doc-user-info').textContent = 'Пользователь не найден';
       return; 
