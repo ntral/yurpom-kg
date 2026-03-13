@@ -523,7 +523,14 @@ window.saveName = async function() {
   hideError('name-error');
 
   try {
-    const user = auth.currentUser || window._state?.currentUser;
+    // Wait for auth state if needed
+    let user = auth.currentUser || window._state?.currentUser;
+    if (!user) {
+      user = await new Promise((resolve) => {
+        const unsub = auth.onAuthStateChanged(u => { unsub(); resolve(u); });
+        setTimeout(() => resolve(null), 5000);
+      });
+    }
     if (!user) { showError('name-error', 'Сессия истекла. Пожалуйста, войдите снова.'); setLoading('name', false); return; }
     // Read doc file if uploaded
     let docData = null, docName = null;
